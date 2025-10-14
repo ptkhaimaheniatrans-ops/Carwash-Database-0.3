@@ -5,6 +5,8 @@ self.addEventListener('install', e => {
       '/index.html',
       '/style.css',
       '/script.js',
+      '/assets/icons/icon-192.png.PNG',
+      '/assets/icons/icon-512.png.jpeg',
       '/assets/sounds/klik.mp3',
       '/assets/sounds/success.mp3',
       '/assets/sounds/error.mp3',
@@ -16,3 +18,4 @@ self.addEventListener('install', e => {
 self.addEventListener('fetch', e => {
   e.respondWith(caches.match(e.request).then(resp => resp || fetch(e.request)));
 });
+
