@@ -1,0 +1,163 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'VT323', monospace;
+  background: linear-gradient(45deg, #EEDFF7, #BDE0FE, #FFFFFF);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@keyframes gradientBG {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+.center-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.hidden { display: none; }
+
+input, button {
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: 2px solid #333;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
+}
+
+.segment-control {
+  display: flex;
+  justify-content: space-between;
+}
+
+.segment-btn {
+  flex: 1;
+  margin: 5px;
+  border-radius: 10px;
+}
+
+.segment-btn.active {
+  background-color: #4B9CE2;
+  color: white;
+}
+
+.popout {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border: 2px solid #333;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  z-index: 1000;
+}
+
+.top-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Database table style */
+#db-list {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+#db-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#db-list th, #db-list td {
+  border: 1px solid #333;
+  padding: 8px;
+  text-align: left;
+}
+
+#db-list th {
+  background-color: #4B9CE2;
+  color: white;
+  font-weight: bold;
+}
+
+#db-list tr:nth-child(even) {
+  background-color: rgba(0,0,0,0.05);
+}
+
+#db-list tr:hover {
+  background-color: rgba(75, 156, 226, 0.2);
+}
+
+/* Tombol di tabel database */
+.entry-buttons button {
+  padding: 3px 6px;       /* lebih kecil secara vertikal dan horizontal */
+  font-size: 12px;        /* ukuran font lebih kecil */
+  border-radius: 5px;     /* tetap rapi */
+  min-width: 50px;        /* cukup untuk tulisan */
+  cursor: pointer;
+}
+
+/* Hover efek tetap ada */
+.entry-buttons button:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Checkbox di tabel */
+.entry-checkbox {
+  transform: scale(1.2);
+  margin-left: 10px;
+}
+
+/* Tombol aksi Edit/Delete di bawah search */
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* Tombol konfirmasi Yes */
+.confirm-btn {
+  background-color: #4B9CE2;
+  color: white;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.confirm-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
+}
