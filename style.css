@@ -42,6 +42,7 @@ input, button {
 
 button {
   background-color: #fff;
+  color: #333;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -89,13 +90,13 @@ button:hover {
 /* Database table style */
 #db-list {
   width: 100%;
-  margin-top: 10px;
+  max-width: 600px;
+  margin: 20px auto;
   font-size: 16px;
 }
 
 #db-list table {
   width: 100%;
-  border-collapse: collapse;
 }
 
 #db-list th, #db-list td {
@@ -116,6 +117,25 @@ button:hover {
 
 #db-list tr:hover {
   background-color: rgba(75, 156, 226, 0.2);
+}
+
+.filter-month {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* jarak antara input dan button */
+  margin: 10px 0;
+  flex-wrap: wrap; /* responsive untuk mobile */
+}
+
+.filter-month input, .filter-month button {
+  max-width: 200px;
+}
+
+#entry-form input[type="date"],
+#entry-form input[list] {
+  width: 100%;  /* sudah 100%, tapi bisa ditambah max-width */
+  max-width: 100%; /* mencegah overflow */
+  box-sizing: border-box; /* pastikan padding dihitung */
 }
 
 /* Tombol di tabel database */
@@ -171,5 +191,6 @@ footer {
   margin-top: 30px;
   text-align: center;
 }
+
 
 
