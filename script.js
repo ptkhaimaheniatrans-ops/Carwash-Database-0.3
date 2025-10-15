@@ -7,6 +7,15 @@ const sounds = {
   welcome: new Audio("assets/sounds/welcome.mp3")
 };
 
+// === Fungsi formatDate ===
+function formatDate(isoStr){
+  const d = new Date(isoStr);
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth()+1).padStart(2, '0');
+  const year = d.getFullYear();
+  return `${year}-${month}-${day}`;
+}
+
 // Loading animation
 const loadingText = document.getElementById("loading-text");
 let loadingStr = "Loading . . . Please wait, your data in sync.";
@@ -118,19 +127,29 @@ async function loadDatabase(month, year){
   }
 }
 
-// Render database
+// Fungsi formatDate
+function formatDate(isoStr){
+  const d = new Date(isoStr);
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth()+1).padStart(2, '0');
+  const year = d.getFullYear();
+  return `${year}-${month}-${day}`;
+}
+
+// Render database dengan Edit/Delete & tanggal format jelas
 function renderDatabase(data){
   const dbList = document.getElementById("db-list");
   dbList.innerHTML = "";
 
   if(data.length === 0) {
     dbList.innerHTML = "<p>No entries found.</p>";
+    document.getElementById("db-total").textContent = "Total entries: 0";
     return;
   }
 
   const table = document.createElement("table");
 
-  // Table header
+  // Header
   const thead = document.createElement("thead");
   thead.innerHTML = `
     <tr>
@@ -143,14 +162,13 @@ function renderDatabase(data){
   `;
   table.appendChild(thead);
 
-  // Table body
+  // Body
   const tbody = document.createElement("tbody");
-
   data.forEach(row => {
     const tr = document.createElement("tr");
     tr.dataset.id = row[0];
     tr.innerHTML = `
-      <td>${row[2]}</td>
+      <td>${formatDate(row[2])}</td>
       <td>${row[3]}</td>
       <td>${row[4]}</td>
       <td>${row[5]}</td>
@@ -174,6 +192,12 @@ function renderDatabase(data){
   dbList.appendChild(table);
 
   document.getElementById("db-total").textContent = "Total entries: " + data.length;
+
+  // CSS tambahan supaya table center dan responsive
+  dbList.style.width = "100%";
+  dbList.style.maxWidth = "600px"; // lebar maksimal table
+  dbList.style.margin = "20px auto"; // center horizontal
+  table.style.width = "100%"; // table lebar penuh container
 }
 
 // Tombol Delete & Confirm
@@ -278,3 +302,4 @@ leaveBtn.addEventListener("click", () => {
   document.getElementById("login-screen").classList.remove("hidden");
   document.getElementById("secret-code").value = ""; // kosongkan input
 });
+
