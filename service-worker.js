@@ -7,10 +7,10 @@ const ASSETS = [
   "./manifest.json",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.jpg",
-  "./assets/sound/klik.mp3",
-  "./assets/sound/success.mp3",
-  "./assets/sound/error.mp3",
-  "./assets/sound/welcome.mp3"
+  "./assets/sounds/klik.mp3",
+  "./assets/sounds/success.mp3",
+  "./assets/sounds/error.mp3",
+  "./assets/sounds/welcome.mp3"
 ];
 
 // Install Service Worker
@@ -37,3 +37,4 @@ self.addEventListener("fetch", event => {
     caches.match(event.request).then(response => response || fetch(event.request))
   );
 });
+
