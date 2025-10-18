@@ -110,9 +110,15 @@ th { background: #ddd; }
 
 #total-entry { font-weight: bold; margin-top: 10px; text-align: center; }
 
+#db-table td:nth-child(2), 
+#db-table th:nth-child(2) {
+  width: 200px; /* sesuaikan lebar sesuai kebutuhan */
+}
+
 /* RESPONSIVE */
 @media only screen and (max-width: 480px) {
   input, button, select { width: 95%; }
 }
+
 
 
