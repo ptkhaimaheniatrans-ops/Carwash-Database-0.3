@@ -1,42 +1,22 @@
 {
   "name": "Carwash Database 0.3",
   "short_name": "CarwashDB",
-  "description": "Digital Carwash Database Dashboard (Offline Ready)",
-  "start_url": "index.html",
+  "description": "Offline-ready PWA app for managing carwash data.",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#d9c2ff",
+  "background_color": "#ffffff",
   "theme_color": "#b7e1ff",
   "orientation": "portrait",
   "icons": [
-    {
-      "src": "assets/icons/icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png"
-    },
-    {
-      "src": "assets/icons/icon-96.png",
-      "sizes": "96x96",
-      "type": "image/png"
-    },
-    {
-      "src": "assets/icons/icon-128.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    },
-    {
-      "src": "assets/icons/icon-144.png",
-      "sizes": "144x144",
-      "type": "image/png"
-    },
     {
       "src": "assets/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "assets/icons/icon-512.png",
+      "src": "assets/icons/icon-512.jpg",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/jpeg"
     }
   ]
 }
