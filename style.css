@@ -295,3 +295,9 @@ button:active, .segment.active {
   background-color: #f9f9ff;
 }
 
+/* Sembunyikan kolom tanggal di tabel utama */
+#dataTable th:first-child,
+#dataTable td:first-child {
+  display: none;
+}
+
