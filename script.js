@@ -206,9 +206,6 @@ async function loadDatabase() {
   }
 }
 
-// Pasang event listener **di luar** fungsi
-document.getElementById('searchBtn').onclick = loadDatabase;
-
 // --- BACK BUTTONS ---
 document.getElementById('backToDashboard1').onclick = () => {
   document.getElementById('inputTab').classList.add('hidden');
@@ -227,6 +224,5 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
-
 
 
