@@ -190,7 +190,8 @@ Object.keys(grouped)
     // Baris header tanggal (group)
     const dateRow = document.createElement('tr');
     dateRow.innerHTML = `
-      <td colspan="4" class="date-group">${date} — ${entries.length} ${entries.length > 1 ? 'entries' : 'entry'}</td>
+      <td></td> <!-- dummy invisible -->
+      <td colspan="3" class="date-group">${date} — ${entries.length} ${entries.length > 1 ? 'entries' : 'entry'}</td>
     `;
     tbody.appendChild(dateRow);
 
@@ -240,6 +241,7 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
 
 
 
