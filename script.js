@@ -222,14 +222,15 @@ if (index < sortedDates.length - 1) {
 }
 });
 
-// Setelah loop selesai
-document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
-playSound('success');
+    // Setelah loop selesai
+    document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
+    playSound('success');
 
-} catch (err) {
-  playSound('error');
-}
-  
+  } catch (err) {
+    playSound('error');
+  } // ✅ Tutup try-catch dengan benar di sini
+} // ✅ Tutup fungsi loadDatabase()
+
 // --- BACK BUTTONS ---
 document.getElementById('backToDashboard1').onclick = () => {
   document.getElementById('inputTab').classList.add('hidden');
@@ -248,12 +249,3 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
-
-
-
-
-
-
-
-
-
