@@ -293,11 +293,7 @@ button:active, .segment.active {
   to { opacity: 1; transform: scale(1); }
 }
 
-@media (max-width: 480px) {
-  .page-logo {
-    width: 50px;   /* 📱 lebih kecil di HP */
-    height: 50px;
-    margin-bottom: 10px;
+
 
 
 
