@@ -5,8 +5,8 @@ const ASSETS = [
   "./style.css",
   "./script.js",
   "./manifest.json",
-  "./assets/icons/icon-192.png",
-  "./assets/icons/icon-512.jpg",
+  "./assets/icons/icon-192.png.PNG",
+  "./assets/icons/icon-512.jpg.jpeg",
   "./assets/sounds/klik.mp3",
   "./assets/sounds/success.mp3",
   "./assets/sounds/error.mp3",
@@ -37,4 +37,5 @@ self.addEventListener("fetch", event => {
     caches.match(event.request).then(response => response || fetch(event.request))
   );
 });
+
 
