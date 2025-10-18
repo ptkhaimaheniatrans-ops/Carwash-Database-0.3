@@ -152,8 +152,6 @@ document.getElementById('submitEntry').onclick = async () => {
 };
 
 // --- DATABASE SEARCH ---
-document.getElementById('searchBtn').onclick = loadDatabase;
-
 async function loadDatabase() {
   const monthInput = document.getElementById('filterMonth').value;
   const tbody = document.querySelector('#dataTable tbody');
@@ -164,72 +162,63 @@ async function loadDatabase() {
   const url = `${SCRIPT_URL}?action=list&month=${parseInt(m)}&year=${y}`;
 
   try {
-  const res = await fetch(url);
-  const json = await res.json();
-  const data = json.data;
+    const res = await fetch(url);
+    const json = await res.json();
+    const data = json.data;
 
-  // Kelompokkan data berdasarkan tanggal
-console.log(data[0]); // Debug: lihat struktur data di console
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3">No data found</td></tr>';
+      return;
+    }
 
-const grouped = {};
-data.forEach(row => {
-  const dateKey = row.Tanggal; // gunakan persis nama dari JSON
-  if (!dateKey) return; // skip jika kosong
+    // 🔹 Grouping berdasarkan tanggal
+    const grouped = {};
+    data.forEach(row => {
+      const dateKey = row.Tanggal; // gunakan key persis dari JSON
+      if (!dateKey) return;
 
-  const formattedDate = new Date(dateKey).toLocaleDateString('en-GB', {
-    day: 'numeric', month: 'short', year: 'numeric'
-  });
+      const formattedDate = new Date(dateKey).toLocaleDateString('en-GB', {
+        day: 'numeric', month: 'short', year: 'numeric'
+      });
 
-  // Gunakan formattedDate sebagai key supaya tampilan lebih rapi
-  if (!grouped[formattedDate]) grouped[formattedDate] = [];
-  grouped[formattedDate].push(row);
-});
+      if (!grouped[formattedDate]) grouped[formattedDate] = [];
+      grouped[formattedDate].push(row);
+    });
 
     // Urutkan tanggal
-const sortedDates = Object.keys(grouped).sort((a, b) => new Date(a) - new Date(b));
+    const sortedDates = Object.keys(grouped).sort((a,b)=> new Date(a) - new Date(b));
 
-// Tampilkan tiap grup tanggal
-sortedDates.forEach((date, index) => {
-  const entries = grouped[date];
-  const totalEntries = entries.length;
+    sortedDates.forEach(date => {
+      const entries = grouped[date];
 
-  // Tambahkan header tanggal + jumlah entri
-  const dateRow = document.createElement('tr');
-  dateRow.innerHTML = `
-    <td colspan="4" class="date-group">
-      ${date} — <span class="entry-count">${totalEntries} ${totalEntries > 1 ? 'entries' : 'entry'}</span>
-    </td>
-  `;
-  tbody.appendChild(dateRow);
+      // Tambahkan baris header tanggal
+      const dateRow = document.createElement('tr');
+      dateRow.innerHTML = `
+        <td colspan="3" class="date-group">${date} — ${entries.length} ${entries.length > 1 ? 'entries' : 'entry'}</td>
+      `;
+      tbody.appendChild(dateRow);
 
-  // Tambahkan baris data di bawah tanggal
-  entries.forEach(row => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td></td>
-      <td>${row.Driver}</td>
-      <td>${row.Unit}</td>
-      <td>${row.Payment}</td>
-    `;
-    tbody.appendChild(tr);
-  });
+      // Tambahkan baris data (Driver, Unit, Payment)
+      entries.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${row.Driver}</td>
+          <td>${row.Unit}</td>
+          <td>${row.Payment}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    });
 
-// Tambahkan separator antar tanggal (kecuali tanggal terakhir)
-if (index < sortedDates.length - 1) {
-  const separatorRow = document.createElement('tr');
-  separatorRow.innerHTML = `<td colspan="4" class="separator"></td>`;
-  tbody.appendChild(separatorRow);
-}
-});
-
-    // Setelah loop selesai
     document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
     playSound('success');
 
-  } catch (err) {
+  } catch(err) {
+    console.error(err);
+    tbody.innerHTML = '<tr><td colspan="3">Failed to load data</td></tr>';
     playSound('error');
-  } // ✅ Tutup try-catch dengan benar di sini
-} // ✅ Tutup fungsi loadDatabase()
+  }
+}
 
 // --- BACK BUTTONS ---
 document.getElementById('backToDashboard1').onclick = () => {
@@ -249,3 +238,4 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
