@@ -162,14 +162,36 @@ async function loadDatabase() {
 
   const [y, m] = monthInput.split('-');
   const url = `${SCRIPT_URL}?action=list&month=${parseInt(m)}&year=${y}`;
+
   try {
     const res = await fetch(url);
     const json = await res.json();
-    json.data.forEach(row => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${row.date}</td><td>${row.driver}</td><td>${row.unit}</td><td>${row.payment}</td>`;
-      tbody.appendChild(tr);
+    const data = json.data;
+
+    // 🔹 Kelompokkan data berdasarkan tanggal
+    const grouped = {};
+    data.forEach(row => {
+      if (!grouped[row.date]) grouped[row.date] = [];
+      grouped[row.date].push(row);
     });
+
+    // 🔹 Tampilkan dalam urutan tanggal (ascending)
+    const sortedDates = Object.keys(grouped).sort((a, b) => new Date(a) - new Date(b));
+
+    sortedDates.forEach(date => {
+      // Tambahkan baris tanggal besar
+      const dateRow = document.createElement('tr');
+      dateRow.innerHTML = `<td colspan="4" style="font-weight:bold; background:#e6d1ff;">${date}</td>`;
+      tbody.appendChild(dateRow);
+
+      // Tambahkan baris detail
+      grouped[date].forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td></td><td>${row.driver}</td><td>${row.unit}</td><td>${row.payment}</td>`;
+        tbody.appendChild(tr);
+      });
+    });
+
     document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
     playSound('success');
   } catch (err) {
@@ -195,5 +217,6 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
 
 
