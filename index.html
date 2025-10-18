@@ -1,123 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carwash Database 0.3</title>
-
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="assets/icons/icon-512.png.jpeg" type="image/jpeg">
-  <link rel="apple-touch-icon" href="assets/icons/icon-512.png.jpeg">
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-
-  <script defer src="script.js"></script>
+  <link rel="icon" href="assets/icons/icon-512.jpg">
 </head>
-
 <body>
-  <!-- LOADING -->
-  <div id="loading" class="center-screen">
-    <div class="typewriter">Loading . . . Please Wait.</div>
+  <!-- Loading Page -->
+  <div id="loading" class="center">
+    <h1 id="loading-text"></h1>
   </div>
 
-  <!-- LOGIN -->
-  <div id="login" class="hidden center-screen">
-    <h1 class="title">Carwash Database 0.3</h1>
-    <p class="subtitle">Insert Your Secret Code Here!</p>
-    <input type="password" id="secretCode" class="input-box" placeholder=".......">
-    <button id="btnConnect" class="btn lilac">Connect</button>
+  <!-- Login Page -->
+  <div id="login-page" class="center hidden">
+    <h1 class="vt323">Carwash Database</h1>
+    <input type="text" id="secret-code" placeholder="Insert Your Secret Code Here!">
+    <button id="connect-btn" class="bounce">Connect</button>
   </div>
 
-  <!-- DASHBOARD -->
-  <div id="dashboard" class="hidden center-screen">
-    <button id="btnBackMain" class="btn back-btn">Back</button>
-    <h1 class="title">Welcome back, to your Digital Dashboard!</h1>
-    <p class="subtitle">Select Action</p>
-    <div id="menuButtons"></div>
+  <!-- Welcome Popout -->
+  <div id="welcome-popup" class="center hidden bounce">
+    <h1 class="vt323">Welcome!</h1>
   </div>
 
-  <!-- INPUT ENTRY TAB -->
-  <div id="inputTab" class="hidden center-screen">
-    <button class="btn back-btn" id="backToDashboard1">Back</button>
-    <h2 class="title">Fill this form down below</h2>
-
-    <label>Date</label>
-    <input type="date" id="dateInput" class="input-box">
-
-    <label>Driver or PO</label>
-    <input list="driverList" id="driverInput" class="input-box" placeholder="Choose or Type Manually">
-    <datalist id="driverList">
-      <option>Andris</option><option>Malik</option><option>Johan</option><option>Dudi</option>
-      <option>Iwan</option><option>Teddy</option><option>Kholik</option><option>Rijal</option>
-      <option>Seno</option><option>Kantor</option>
-    </datalist>
-
-    <label>Unit</label>
-    <input list="unitList" id="unitInput" class="input-box" placeholder="Choose or Type Manually">
-    <datalist id="unitList">
-      <option>Avanza NZR</option><option>New Avanza</option><option>Xenia ROK | FAU</option>
-      <option>Honda BRV BZO</option><option>Terios UKU</option><option>Veloz DFJ</option>
-      <option>Stargazer</option><option>Innova Reborn PKA | FAP</option>
-      <option>Zenix 89 WIS</option><option>Zenix 50 WIS</option>
-      <option>Zenix Hybrid NFJ</option><option>HiAce 09 WDA</option>
-    </datalist>
-
-    <label>Payment Method</label>
-    <div class="segment-control">
-      <div class="segment blue" data-value="Transfer">Transfer</div>
-      <div class="segment grey" data-value="Cash">Cash</div>
+  <!-- Dashboard -->
+  <div id="dashboard" class="center hidden">
+    <button id="logout-btn">Back</button>
+    <h1 class="vt323">Welcome back, to your Digital Dashboard!</h1>
+    <p class="monospace">Select Action</p>
+    <div id="user-tabs">
+      <button id="input-entry-tab">Input Entry</button>
+      <button id="database-tab">Database</button>
     </div>
-
-    <button id="submitEntry" class="btn lilac">Press to Submit</button>
   </div>
 
-  <!-- DATABASE TAB -->
-  <div id="databaseTab" class="hidden center-screen">
-    <button class="btn back-btn" id="backToDashboard2">Back</button>
-    <h2 class="title">Database</h2>
+  <!-- Input Entry Tab -->
+  <div id="input-entry" class="center hidden">
+    <button id="back-entry">Back</button>
+    <h2 class="vt323">Fill this form down below</h2>
+    <form id="entry-form">
+      <label>Date</label>
+      <input type="date" id="entry-date" required>
+      <label>Driver or PO</label>
+      <input list="drivers" id="entry-driver" placeholder="Choose or Type Manually">
+      <datalist id="drivers">
+        <option value="Andris"><option value="Malik"><option value="Johan"><option value="Dudi">
+        <option value="Iwan"><option value="Teddy"><option value="Kholik"><option value="Rijal">
+        <option value="Seno"><option value="Kantor">
+      </datalist>
+      <label>Unit</label>
+      <input list="units" id="entry-unit" placeholder="Choose or Type Manually">
+      <datalist id="units">
+        <option value="Avanza NZR"><option value="New Avanza"><option value="Xenia ROK | FAU">
+        <option value="Honda BRV BZO"><option value="Terios UKU"><option value="Veloz DFJ">
+        <option value="Stargazer"><option value="Innova Reborn PKA | FAP">
+        <option value="Zenix 89 WIS"><option value="Zenix 50 WIS"><option value="Zenix Hybrid NFJ">
+        <option value="HiAce 09 WDA">
+      </datalist>
+      <label>Payment Method</label>
+      <div class="segmented-control">
+        <input type="radio" name="payment" value="Transfer" checked> Transfer
+        <input type="radio" name="payment" value="Cash"> Cash
+      </div>
+      <button type="submit" id="submit-entry">Press to Submit</button>
+    </form>
+  </div>
 
-    <div class="filter-box">
-      <input type="month" id="filterMonth" class="input-box" style="width:60%;">
-      <button id="searchBtn" class="btn lilac" style="width:60%;">Search</button>
+  <!-- Database Tab -->
+  <div id="database" class="center hidden">
+    <button id="back-db">Back</button>
+    <h1 class="vt323">Database</h1>
+    <div class="filter-search">
+      <input type="month" id="filter-month">
+      <button id="search-btn">Search</button>
     </div>
-
-    <table id="dataTable">
-  <thead>
-    <tr>
-      <th></th> <!-- dummy untuk tanggal -->
-      <th>Driver or PO</th>
-      <th>Unit</th>
-      <th>Payment</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- JS inject rows -->
-  </tbody>
-</table>
-    <div class="total" id="totalEntry"></div>
+    <table id="db-table">
+      <thead>
+        <tr>
+          <th>Date</th><th>Driver or PO</th><th>Unit</th><th>Payment</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div id="total-entry">Total: 0</div>
   </div>
 
-  <!-- 🧩 Inline script -->
-  <script>
-    // Show loading screen first, then login
-    window.onload = () => {
-      setTimeout(() => {
-        document.getElementById('loading').classList.add('hidden');
-        document.getElementById('login').classList.remove('hidden');
-      }, 2000);
-    };
+  <audio id="sound-click" src="assets/sounds/klik.mp3"></audio>
+  <audio id="sound-welcome" src="assets/sounds/welcome.mp3"></audio>
+  <audio id="sound-success" src="assets/sounds/success.mp3"></audio>
+  <audio id="sound-error" src="assets/sounds/error.mp3"></audio>
 
-    // Register Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker
-          .register('service-worker.js')
-          .then(reg => console.log('Service Worker registered:', reg.scope))
-          .catch(err => console.error('Service Worker registration failed:', err));
-      });
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
-
-
