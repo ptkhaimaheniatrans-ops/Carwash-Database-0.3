@@ -278,6 +278,12 @@ button:active, .segment.active {
   margin: 0 auto;
 }
 
+th {
+  background: #e6d1ff;
+  font-weight: bold;
+}
+
+/* Tambahkan dari sini */
 #dataTable td[colspan="4"] {
   text-align: left;
   padding: 5px 10px;
@@ -300,4 +306,3 @@ button:active, .segment.active {
 #dataTable td:first-child {
   display: none;
 }
-
