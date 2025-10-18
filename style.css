@@ -280,9 +280,9 @@ button:active, .segment.active {
 
 #dataTable td[colspan="4"] {
   text-align: left;
-  padding: 8px 10px;
+  padding: 5px 10px;
   font-family: 'VT323', monospace;
-  font-size: 18px;
+  font-size: 10px;
   background: #e6d1ff;
   border-top: 2px solid #999;
 }
@@ -294,3 +294,4 @@ button:active, .segment.active {
 #dataTable tr:nth-child(even) td:not([colspan]) {
   background-color: #f9f9ff;
 }
+
