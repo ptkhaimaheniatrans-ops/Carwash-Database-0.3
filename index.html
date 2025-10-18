@@ -15,6 +15,28 @@
   <div id="loading" class="center-screen">
     <div class="typewriter">Loading . . . Please Wait.</div>
   </div>
+  <script>
+    
+    // play loading then show login
+    window.onload = () => {
+      setTimeout(() => {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('login').classList.remove('hidden');
+      }, 2000);
+    };
+
+    // 🧩 Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('service-worker.js')
+          .then(reg => console.log('Service Worker registered:', reg.scope))
+          .catch(err => console.error('Service Worker registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>
 
   <!-- LOGIN -->
   <div id="login" class="hidden center-screen">
@@ -97,3 +119,4 @@
   </script>
 </body>
 </html>
+
