@@ -1,7 +1,7 @@
 /* GENERAL BODY */
 body {
   font-family: monospace;
-  background: linear-gradient(135deg, #8e2de2, #4a00e0, #00c6ff);
+  background: linear-gradient(135deg, #A3D8F4, #CBA6F7, #FFFFFF);
   color: #333;
   display: flex;
   justify-content: center;
@@ -114,3 +114,4 @@ th { background: #ddd; }
 @media only screen and (max-width: 480px) {
   input, button, select { width: 95%; }
 }
+
