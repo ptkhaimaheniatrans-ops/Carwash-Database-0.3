@@ -1,196 +1,265 @@
-body {
+/* FONT SETUP */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+/* RESET */
+* {
   margin: 0;
   padding: 0;
-  font-family: 'VT323', monospace;
-  background: linear-gradient(45deg, #EEDFF7, #BDE0FE, #FFFFFF);
-  background-size: 400% 400%;
-  animation: gradientBG 15s ease infinite;
-  color: #333;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-@keyframes gradientBG {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
-}
-
-.center-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 90%;
-  max-width: 400px;
-  margin: 20px auto;
-}
-
-.hidden { display: none; }
-
-input, button {
-  font-family: 'VT323', monospace;
-  font-size: 18px;
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 10px;
-  border: 2px solid #333;
-  width: 100%;
   box-sizing: border-box;
 }
 
-button {
-  background-color: #fff;
-  color: #333;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
-}
-
-.segment-control {
-  display: flex;
-  justify-content: space-between;
-}
-
-.segment-btn {
-  flex: 1;
-  margin: 5px;
-  border-radius: 10px;
-}
-
-.segment-btn.active {
-  background-color: #4B9CE2;
-  color: white;
-}
-
-.popout {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  border: 2px solid #333;
-  padding: 20px;
-  border-radius: 15px;
-  text-align: center;
-  z-index: 1000;
-}
-
-.top-buttons {
-  display: flex;
-  justify-content: space-between;
+html, body {
+  height: 100%;
   width: 100%;
+  overflow-x: hidden;
 }
 
-/* Database table style */
-#db-list {
-  width: 100%;
-  max-width: 600px;
-  margin: 20px auto;
-  font-size: 16px;
-}
-
-#db-list table {
-  width: 100%;
-}
-
-#db-list th, #db-list td {
-  border: 1px solid #333;
-  padding: 8px;
-  text-align: left;
-}
-
-#db-list th {
-  background-color: #4B9CE2;
-  color: white;
-  font-weight: bold;
-}
-
-#db-list tr:nth-child(even) {
-  background-color: rgba(0,0,0,0.05);
-}
-
-#db-list tr:hover {
-  background-color: rgba(75, 156, 226, 0.2);
-}
-
-.filter-month {
+/* BODY BASE */
+body {
+  font-family: monospace;
+  background: linear-gradient(180deg, #d9c2ff, #b7e1ff, #ffffff);
+  color: #3a3a3a;
   display: flex;
   justify-content: center;
-  gap: 10px; /* jarak antara input dan button */
-  margin: 10px 0;
-  flex-wrap: wrap; /* responsive untuk mobile */
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
 }
 
-.filter-month input, .filter-month button {
-  max-width: 200px;
+/* MAIN CONTAINERS */
+section, div.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+  padding: 15px;
+  margin: 0 auto;
 }
 
-#entry-form input[type="date"],
-#entry-form input[list] {
-  width: 100%;  /* sudah 100%, tapi bisa ditambah max-width */
-  max-width: 100%; /* mencegah overflow */
-  box-sizing: border-box; /* pastikan padding dihitung */
+/* GENERAL ELEMENTS */
+.hidden {
+  display: none !important;
 }
 
-/* Tombol di tabel database */
-.entry-buttons button {
-  padding: 3px 6px;       /* lebih kecil secara vertikal dan horizontal */
-  font-size: 12px;        /* ukuran font lebih kecil */
-  border-radius: 5px;     /* tetap rapi */
-  min-width: 50px;        /* cukup untuk tulisan */
+button, input, select {
+  font-family: monospace;
+  outline: none;
+  border: 1.5px solid #666;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 8px 0;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+  color: #333;
+  background: #fff;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 8px rgba(140, 150, 255, 0.3);
+}
+
+button:hover, input:focus, select:focus {
+  box-shadow: 0 0 15px #8fa6ff, 0 0 25px #b5b0ff;
+  transform: scale(1.02);
+}
+
+/* BUTTONS */
+.btn {
+  background: #e2ccff;
+  border: 1.5px solid #696;
   cursor: pointer;
 }
 
-/* Hover efek tetap ada */
-.entry-buttons button:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+.btn:hover {
+  background: #d5bbff;
 }
 
-/* Checkbox di tabel */
-.entry-checkbox {
-  transform: scale(1.2);
-  margin-left: 10px;
+.btn.pulse {
+  animation: pulseClick 0.3s ease;
 }
 
-/* Tombol aksi Edit/Delete di bawah search */
-.action-buttons {
+/* SEGMENT CONTROL */
+.segment-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 10px;
   margin-top: 10px;
 }
 
-/* Tombol konfirmasi Yes */
-.confirm-btn {
-  background-color: #4B9CE2;
-  color: white;
-  padding: 8px;
-  border-radius: 8px;
-  border: none;
+.segment {
+  padding: 10px 20px;
+  border: 1.5px solid #666;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 16px;
+  width: 140px;
+  text-align: center;
+  transition: all 0.25s ease;
+  background: #fff;
+  box-shadow: 0 0 6px rgba(150,150,255,0.3);
 }
 
-.confirm-btn:hover {
+.segment.active {
+  border-color: #627bff;
+  box-shadow: 0 0 15px #a4b1ff, 0 0 25px #c0aaff;
+}
+
+.segment[data-value="Transfer"].active {
+  background: #b8e1ff; /* Baby Blue */
+}
+
+.segment[data-value="Cash"].active {
+  background: #b4f2b4; /* Soft Green */
+}
+
+/* SEGMENT EFFECTS */
+.segment:hover {
   transform: scale(1.05);
-  box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
 }
 
-footer img {
-  width: 60px;
-  height: 60px;
-  opacity: 0.9;
+@keyframes bounceTap {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.15); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); }
 }
-footer {
-  margin-top: 30px;
+
+.segment.bounce {
+  animation: bounceTap 0.3s ease;
+}
+
+/* BUTTON PULSE EFFECT */
+@keyframes pulseClick {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.1); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+/* --- FIXED POPUP CENTER --- */
+.popup {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background: #ffffff;
+  border: 1.5px solid #777;
+  box-shadow: 0 0 15px #a4b1ff, 0 0 30px #c0aaff;
+  padding: 15px 30px;
+  border-radius: 12px;
+  font-family: 'VT323', monospace;
+  font-size: 22px;
+  animation: bounceTap 0.4s ease;
+  z-index: 9999;
+}
+
+/* HEADERS */
+h1, h2, h3 {
+  font-family: 'VT323', monospace;
+  text-align: center;
+  margin: 10px 0;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  max-width: 320px;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 14px;
+  background: #ffffffb0;
+  box-shadow: 0 0 10px rgba(150,150,255,0.3);
+}
+
+th, td {
+  border: 1px solid #777;
+  padding: 8px;
   text-align: center;
 }
 
+th {
+  background: #e6d1ff;
+  font-weight: bold;
+}
 
+/* FILTER */
+.filter-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0;
+}
 
+input[type="month"] {
+  width: 160px;
+}
+
+/* FOOTER / TOTAL */
+#totalEntry {
+  text-align: center;
+  margin-top: 12px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+/* LOADING PAGE */
+#loadingPage {
+  font-family: 'VT323', monospace;
+  font-size: 22px;
+  text-align: center;
+  color: #333;
+  animation: typewriter 2s steps(30) infinite;
+}
+
+@keyframes typewriter {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+/* FORM LAYOUT */
+.form-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  margin: 6px 0;
+}
+
+.form-group label {
+  flex: 1;
+  text-align: left;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+  flex: 1;
+  text-align: right;
+}
+
+/* GRADIENT GLOW */
+input, select, button, .segment {
+  border: 1.5px solid #6c6c8a;
+  box-shadow: 0 0 8px #a4b1ff;
+}
+
+button:active, .segment.active {
+  box-shadow: 0 0 15px #9ab1ff, 0 0 30px #c7aaff;
+}
+
+/* CENTER ALL ELEMENTS */
+#login, #dashboard, #inputTab, #databaseTab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+}
