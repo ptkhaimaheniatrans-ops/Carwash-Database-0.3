@@ -280,22 +280,21 @@ button:active, .segment.active {
 
 /* PAGE LOGO - posisi di atas center */
 .page-logo {
-  position: absolute;      /* biar bisa diposisikan bebas */
-  top: 20px;               /* jarak dari atas layar */
-  left: 50%;               /* posisikan di tengah horizontal */
-  transform: translateX(-50%);  /* pastikan benar-benar center */
-  width: 60px;             /* ukuran proporsional */
-  height: 60px;
+  position: absolute;
+  top: 20px;                /* jarak dari atas layar */
+  left: 50%;                /* center horizontal */
+  transform: translateX(-50%);
+  width: 100px;             /* ✅ perbesar ukuran */
+  height: auto;             /* biar proporsional */
   object-fit: contain;
   animation: fadeIn 1s ease;
   z-index: 10;
 }
 
-/* Responsif: kecilkan di HP */
+/* Responsif untuk HP */
 @media (max-width: 480px) {
   .page-logo {
-    width: 80px;
-    height: 80px;
+    width: 80px;            /* sedikit lebih kecil di HP */
     top: 15px;
   }
-
+}
