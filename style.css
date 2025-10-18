@@ -110,10 +110,18 @@ th { background: #ddd; }
   table-layout: fixed; /* agar lebar kolom sesuai min-width */
 }
 
+@media only screen and (max-width: 480px) {
+  #db-table {
+    width: 100%;
+    font-size: 0.8em;
+  }
+}
+
 /* RESPONSIVE */
 @media only screen and (max-width: 480px) {
   input, button, select { width: 95%; }
 }
+
 
 
 
