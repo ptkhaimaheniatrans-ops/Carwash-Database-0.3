@@ -292,10 +292,11 @@ button:active, .segment.active {
 }
 
 /* Responsif: semua HP */
-@media (max-width: 768px) {
+@media (max-width: 300px) {
   .page-logo {
     width: 100px;
     bottom: 20px;
   }
 }
+
 
