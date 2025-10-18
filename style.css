@@ -278,20 +278,33 @@ button:active, .segment.active {
   margin: 0 auto;
 }
 
-/* PAGE LOGO */
+/* PAGE LOGO - posisi di atas center */
 .page-logo {
-  height: 1.2em;        /* 🔹 setinggi huruf judul */
-  width: auto;          /* biar proporsional mengikuti lebar asli */
-  vertical-align: middle;
-  margin-bottom: 8px;
+  position: absolute;      /* biar bisa diposisikan bebas */
+  top: 20px;               /* jarak dari atas layar */
+  left: 50%;               /* posisikan di tengah horizontal */
+  transform: translateX(-50%);  /* pastikan benar-benar center */
+  width: 60px;             /* ukuran proporsional */
+  height: 60px;
+  object-fit: contain;
   animation: fadeIn 1s ease;
+  z-index: 10;
 }
+
+/* Responsif: kecilkan di HP */
+@media (max-width: 480px) {
+  .page-logo {
+    width: 45px;
+    height: 45px;
+    top: 15px;
+  }
 
 /* Optional: efek muncul halus */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.8); }
   to { opacity: 1; transform: scale(1); }
 }
+
 
 
 
