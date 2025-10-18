@@ -294,7 +294,8 @@ button:active, .segment.active {
 /* Responsif: kecilkan di HP biar tidak ganggu teks */
 @media (max-width: 480px) {
   .page-logo {
-    width: 100px;            /* masih terlihat besar di HP */
+    width: 600px;            /* masih terlihat besar di HP */
     top: 15px;
   }
 }
+
