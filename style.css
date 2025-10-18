@@ -277,25 +277,3 @@ button:active, .segment.active {
   max-width: 360px;
   margin: 0 auto;
 }
-
-.page-logo {
-  position: fixed;                /* tetap di bawah layar */
-  bottom: 15px;                   /* jarak dari bawah */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 18vw;                    /* ukuran responsif: 18% dari lebar layar */
-  max-width: 120px;               /* batasi agar tidak terlalu besar di tablet */
-  min-width: 80px;                /* biar tidak terlalu kecil di HP */
-  height: auto;
-  object-fit: contain;
-  filter: invert(1) brightness(0.8);
-  opacity: 0.9;
-  animation: fadeIn 1s ease;
-  z-index: 5;
-}
-
-/* bisa tambahkan efek fadeIn jika belum ada */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translate(-50%, 20px); }
-  to { opacity: 0.9; transform: translate(-50%, 0); }
-}
