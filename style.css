@@ -283,7 +283,7 @@ button:active, .segment.active {
   width: 30px;
   height: 30px;
   object-fit: contain;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   animation: fadeIn 1s ease;
 }
 
@@ -298,6 +298,7 @@ button:active, .segment.active {
     width: 50px;   /* 📱 lebih kecil di HP */
     height: 50px;
     margin-bottom: 10px;
+
 
 
 
