@@ -283,47 +283,66 @@ th {
   font-weight: bold;
 }
 
-/* === TANGGAL GROUP STYLE === */
+/* === DATE GROUP STYLE === */
 #dataTable td.date-group {
   text-align: left;
   padding: 8px 12px;
   font-family: 'VT323', monospace;
-  font-size: 18px;
+  font-size: 16px;              /* sedikit lebih kecil agar pas di HP */
   font-weight: bold;
   background: linear-gradient(90deg, #e6d1ff, #f2f0ff);
   border-top: 2px solid #bbaaff;
   border-bottom: 1px solid #ccc;
   color: #3a2b4d;
-  position: relative;
   animation: fadeInDown 0.4s ease;
 }
 
+/* Tambahkan ikon kalender */
 #dataTable td.date-group::before {
   content: "📅 ";
   margin-right: 6px;
-  font-size: 18px;
-  vertical-align: middle;
+  font-size: 16px;
 }
 
+/* Jumlah entry per tanggal */
 #dataTable td.date-group .entry-count {
-  font-size: 14px;
+  font-size: 13px;
   color: #555;
   font-weight: normal;
 }
 
+/* Separator antar tanggal */
 #dataTable td.separator {
   height: 8px;
-  background: linear-gradient(to right, transparent, #e0e0e0, transparent);
+  background: linear-gradient(to right, transparent, #ddd, transparent);
   border: none;
 }
 
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Sembunyikan kolom tanggal asli */
+/* Hilangkan kolom tanggal asli (tapi data grouping tetap jalan) */
 #dataTable th:first-child,
 #dataTable td:first-child {
   display: none;
+}
+
+/* Responsif agar tabel tidak terlalu lebar di HP */
+@media (max-width: 480px) {
+  #dataTable {
+    font-size: 12px;
+    max-width: 95%;
+  }
+
+  #dataTable td.date-group {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  #dataTable td.date-group::before {
+    font-size: 14px;
+  }
+}
+
+/* Efek masuk halus untuk tiap grup */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
