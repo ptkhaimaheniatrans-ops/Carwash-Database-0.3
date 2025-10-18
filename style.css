@@ -77,24 +77,18 @@ button.bounce:active { transform: scale(1.1); }
 }
 
 /* SEGMENTED CONTROL */
-.segmented-control {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 10px 0;
-}
-
-.segmented-control input[type="radio"] { display: none; }
 .segmented-control label {
-  padding: 10px 20px;
-  border: 1px solid #333;
-  border-radius: 5px;
-  cursor: pointer;
+  flex: 1;
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
 }
 
 .segmented-control input[type="radio"]:checked + label {
-  background-color: #89CFF0;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  transform: scale(1.05);
 }
+
 
 /* TABLE */
 table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9em; }
@@ -119,6 +113,7 @@ th { background: #ddd; }
 @media only screen and (max-width: 480px) {
   input, button, select { width: 95%; }
 }
+
 
 
 
