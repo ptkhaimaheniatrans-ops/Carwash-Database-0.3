@@ -62,8 +62,11 @@
       </datalist>
       <label>Payment Method</label>
       <div class="segmented-control">
-        <input type="radio" name="payment" value="Transfer" checked> Transfer
-        <input type="radio" name="payment" value="Cash"> Cash
+        <input type="radio" id="payment-transfer" name="payment" value="Transfer" checked>
+        <label for="payment-transfer" style="background-color:#5D9CEC;">Transfer</label>
+
+       <input type="radio" id="payment-cash" name="payment" value="Cash">
+       <label for="payment-cash" style="background-color:#90EE90;">Cash</label>
       </div>
       <button type="submit" id="submit-entry">Press to Submit</button>
     </form>
@@ -96,5 +99,6 @@
   <script src="script.js"></script>
 </body>
 </html>
+
 
 
