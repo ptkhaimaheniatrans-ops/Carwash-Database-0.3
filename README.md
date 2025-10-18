@@ -1,54 +1,47 @@
-# 🚗 Carwash Database 0.3
+# Carwash-Database-0.3
 
-A simple PWA (Progressive Web App) to record and view carwash entries connected to Google Sheets through Google Apps Script.
+Digital dashboard & entry system untuk data carwash, siap dihosting di GitHub Pages.
 
----
-
-## 📂 Project Structure
-
-.
-├── index.html
-├── style.css
-├── script.js
-├── manifest.json
-├── service-worker.js
-├── README.md
-└── assets/
-├── icons/
-│ ├── icon-192.png
-│ └── icon-512.jpg
-└── sound/
-├── klik.mp3
-├── success.mp3
-├── error.mp3
-└── welcome.mp3
+## Struktur File
+index.html
+style.css
+script.js
+manifest.json
+service-worker.js
+assets/
+icons/
+icon-192.png
+icon-512.jpg
+sounds/
+klik.mp3
+welcome.mp3
+error.mp3
+success.mp3
 
 
----
+## Fitur
 
-## ⚙️ Features
+- Login dengan secret code (2 user berbeda)
+- Input Entry (User 1 only)
+- Database (lihat & delete entry)
+- Table grouped by Date
+- Filter database berdasarkan bulan
+- Sound effects: klik, welcome, success, error
+- Popout Welcome & Confirmation delete
+- Mobile-friendly & centered layout
+- PWA ready (manifest + service worker)
 
-- Secure login with secret code
-- Input new carwash data
-- View monthly database from Google Sheets
-- Offline support via service worker
-- Sound effects for actions and notifications
+## Deployment
 
----
+1. Upload semua file ke GitHub Repository
+2. Enable GitHub Pages
+3. Update `WEB_APP_URL` di `script.js` dengan Apps Script Web App URL
+4. Test di browser / smartphone
 
-## 🔊 Sound Effects
+## Notes
 
-| Action | Sound File | Description |
-|--------|-------------|-------------|
-| All button clicks (connect, submit, back, dropdown, etc.) | `klik.mp3` | Click sound |
-| Successful login | `success.mp3` | Login success |
-| Wrong password or invalid submission | `error.mp3` | Error sound |
-| Welcome pop-up | `welcome.mp3` | Greeting sound |
-
----
-
-## 🧠 Notes
-
-- Make sure to update your **Apps Script Web App URL** inside `script.js`  
-  ```js
-  const SCRIPT_URL = "YOUR_DEPLOYED_APPS_SCRIPT_URL";
+- Apps Script harus di-deploy sebagai Web App dengan:
+  - Execute as: Me
+  - Who has access: Anyone, even anonymous
+- Dropdown di Input Entry bisa ketik manual jika tidak ada di list
+- Semua layout menggunakan font VT323 dan monospace
