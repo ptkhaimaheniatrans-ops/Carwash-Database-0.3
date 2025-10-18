@@ -214,13 +214,13 @@ Object.keys(grouped)
 
 // Update total entry
 document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
-playSound('success');
-
-} catch(err) {
-  console.error(err);
-  tbody.innerHTML = '<tr><td colspan="4">Failed to load data</td></tr>';
-  playSound('error');
-}
+    playSound('success');
+  } catch(err) {                 // buka catch 3
+    console.error(err);
+    tbody.innerHTML = '<tr><td colspan="4">Failed to load data</td></tr>';
+    playSound('error');
+  }                               // tutup catch 3
+}                                 // tutup fungsi 1
 
 // --- BACK BUTTONS ---
 document.getElementById('backToDashboard1').onclick = () => {
@@ -240,6 +240,7 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
 
 
 
