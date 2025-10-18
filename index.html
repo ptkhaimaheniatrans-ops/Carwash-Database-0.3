@@ -1,117 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Carwash Database 0.3</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="assets/icons/icon-192.png" />
+  <script defer src="script.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="assets/icons/icon-192.png.PNG" type="image/png">
 </head>
 <body>
-  <!-- Loading Page -->
-  <div id="loading-screen" class="center-screen">
-    <p id="loading-text"></p>
+  <!-- LOADING -->
+  <div id="loading" class="center-screen">
+    <div class="typewriter">Loading . . . Please Wait.</div>
   </div>
 
-  <!-- Login Page -->
-  <div id="login-screen" class="center-screen hidden">
-    <h2>Hello, Input your secret code</h2>
-    <input type="password" id="secret-code" placeholder="Input your code here!">
-    <button id="login-btn">Connect</button>
+  <!-- LOGIN -->
+  <div id="login" class="hidden center-screen">
+    <h1 class="title">Carwash Database 0.3</h1>
+    <p class="subtitle">Insert Your Secret Code Here!</p>
+    <input type="password" id="secretCode" class="input-box" placeholder=".......">
+    <button id="btnConnect" class="btn lilac">Connect</button>
   </div>
 
-  <!-- Welcome Popout -->
-  <div id="welcome-popout" class="popout hidden">
-    <p>Welcome!</p>
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="hidden center-screen">
+    <button id="btnBackMain" class="btn back-btn">Back</button>
+    <h1 class="title">Welcome back, to your Digital Dashboard!</h1>
+    <p class="subtitle">Select Action</p>
+    <div id="menuButtons"></div>
   </div>
 
-  <!-- Dashboard -->
-  <div id="dashboard" class="center-screen hidden">
-    <div class="top-buttons">
-      <button id="leave-btn">Leave</button>
-    </div>
-    <h2>Your Digital Dashboard</h2>
-    <p>Select Action</p>
-    <div id="tabs">
-      <button class="tab-btn" data-tab="entry">Entry Input</button>
-      <button class="tab-btn" data-tab="database">Database</button>
+  <!-- INPUT ENTRY TAB -->
+  <div id="inputTab" class="hidden center-screen">
+    <button class="btn back-btn" id="backToDashboard1">Back</button>
+    <h2 class="title">Fill this form down below</h2>
+
+    <label>Date</label>
+    <input type="date" id="dateInput" class="input-box">
+
+    <label>Driver or PO</label>
+    <input list="driverList" id="driverInput" class="input-box" placeholder="Choose or Type Manually">
+    <datalist id="driverList">
+      <option>Andris</option><option>Malik</option><option>Johan</option><option>Dudi</option>
+      <option>Iwan</option><option>Teddy</option><option>Kholik</option><option>Rijal</option>
+      <option>Seno</option><option>Kantor</option>
+    </datalist>
+
+    <label>Unit</label>
+    <input list="unitList" id="unitInput" class="input-box" placeholder="Choose or Type Manually">
+    <datalist id="unitList">
+      <option>Avanza NZR</option><option>New Avanza</option><option>Xenia ROK | FAU</option>
+      <option>Honda BRV BZO</option><option>Terios UKU</option><option>Veloz DFJ</option>
+      <option>Stargazer</option><option>Innova Reborn PKA | FAP</option>
+      <option>Zenix 89 WIS</option><option>Zenix 50 WIS</option>
+      <option>Zenix Hybrid NFJ</option><option>HiAce 09 WDA</option>
+    </datalist>
+
+    <label>Payment Method</label>
+    <div class="segment-control">
+      <div class="segment blue" data-value="Transfer">Transfer</div>
+      <div class="segment grey" data-value="Cash">Cash</div>
     </div>
 
-    <!-- Entry Input Form -->
-    <div id="entry-tab" class="tab-content hidden">
-      <h3>Fill your form down below</h3>
-      <form id="entry-form">
-        <input type="hidden" id="unique-id">
-        <input type="hidden" id="timestamp">
-        <label>Date:</label>
-        <input type="date" id="date">
-        <label>Driver or PO:</label>
-        <input list="driver-list" id="driver_or_po" placeholder="choose or type manually">
-        <datalist id="driver-list">
-          <option value="Andris">
-          <option value="Malik">
-          <option value="Johan">
-          <option value="Dudi">
-          <option value="Iwan">
-          <option value="Teddy">
-          <option value="Kholik">
-          <option value="Rijal">
-          <option value="Seno">
-        </datalist>
-        <label>Unit:</label>
-        <input list="unit-list" id="unit" placeholder="choose or type manually">
-        <datalist id="unit-list">
-          <option value="Avanza NZR">
-          <option value="New Xenia ROK - FAU">
-          <option value="Honda BRV BZO">
-          <option value="Terios UKU">
-          <option value="Veloz DFJ">
-          <option value="Stargazer">
-          <option value="Innova Reborn PKA - FAP">
-          <option value="Zenix 89 WIS">
-          <option value="Zenix 50 WIS">
-          <option value="Zenix Hybrid NFJ">
-          <option value="HiAce 09 WDA">
-        </datalist>
-        <label>Payment Method:</label>
-        <div class="segment-control">
-          <button type="button" class="segment-btn" data-method="Transfer">Transfer</button>
-          <button type="button" class="segment-btn" data-method="Cash">Cash</button>
-        </div>
-        <button type="submit" id="submit-btn">Press to Submit</button>
-      </form>
-    </div>
-
-    <!-- Database Tab -->
-      <h3>Database</h3>
-      <div class="filter-month">
-        <input type="month" id="filter-month">
-        <button id="filter-btn">Search</button>
-    </div>
-
-    <!-- Tombol aksi di bawah search -->
-    <div class="action-buttons">
-      <button id="delete-btn">Delete</button>
-      <button id="confirm-btn" class="confirm-btn hidden">Yes</button>
-    </div>
-
-    <div id="db-list"></div>
-    <p id="db-total"></p>
+    <button id="submitEntry" class="btn lilac">Press to Submit</button>
   </div>
 
+  <!-- DATABASE TAB -->
+  <div id="databaseTab" class="hidden center-screen">
+    <button class="btn back-btn" id="backToDashboard2">Back</button>
+    <h2 class="title">Database</h2>
 
-  <!-- Popout messages -->
-  <div id="popout-msg" class="popout hidden">
-    <p id="popout-text"></p>
+    <div class="filter-box">
+      <input type="month" id="filterMonth" class="input-box" style="width:60%;">
+      <button id="searchBtn" class="btn lilac" style="width:30%;">Search</button>
+    </div>
+
+    <table id="dataTable">
+      <thead>
+        <tr><th>Date</th><th>Driver or PO</th><th>Unit</th><th>Payment</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="total" id="totalEntry"></div>
   </div>
 
-<footer>
-  <img src="assets/icons/icon-192.png.PNG" alt="Logo">
-</footer>
-
-  <script src="script.js"></script>
+  <script>
+    // play loading then show login
+    window.onload = () => {
+      setTimeout(() => {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('login').classList.remove('hidden');
+      }, 2000);
+    };
+  </script>
 </body>
 </html>
-
