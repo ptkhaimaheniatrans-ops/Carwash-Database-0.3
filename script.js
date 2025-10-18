@@ -1,305 +1,185 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzU8B1jrHtB6XrLTdwNbnahCb1uRBFwYT6w3uAnEfUSJhMM5u8o5N0fZ-MIW6WI797ryw/exec";
+// GOOGLE APPS SCRIPT DEPLOYED URL
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIRFJhysCT_pMvDW-yPLD-w6gSdSh4UTMhMU_5pwPyGhBIjfBwtx00NhpozaDv_0EVEw/exec"; // replace with your Apps Script Web App URL
 
+// Sound setup
 const sounds = {
-  klik: new Audio("assets/sounds/klik.mp3"),
-  success: new Audio("assets/sounds/success.mp3"),
-  error: new Audio("assets/sounds/error.mp3"),
-  welcome: new Audio("assets/sounds/welcome.mp3")
+  klik: new Audio('assets/sound/klik.mp3'),
+  success: new Audio('assets/sound/success.mp3'),
+  error: new Audio('assets/sound/error.mp3'),
+  welcome: new Audio('assets/sound/welcome.mp3')
+};
+Object.values(sounds).forEach(s => s.preload = 'auto');
+
+function playSound(type) {
+  const s = sounds[type];
+  if (s) {
+    s.currentTime = 0;
+    s.play().catch(()=>{});
+  }
+}
+
+function showPopup(text) {
+  const pop = document.createElement('div');
+  pop.className = 'popup';
+  pop.textContent = text;
+  document.body.appendChild(pop);
+  setTimeout(() => pop.remove(), 2500);
+}
+
+// 🎵 Play click sound for every button globally
+document.addEventListener('click', e => {
+  const el = e.target.closest('button, .btn');
+  if (el) {
+    playSound('klik');
+    el.classList.add('pulse');
+    setTimeout(() => el.classList.remove('pulse'), 400);
+  }
+});
+
+// 🎵 Also trigger sound on input focus (date, dropdown, etc.)
+document.addEventListener('focusin', e => {
+  const el = e.target;
+  if (['INPUT', 'SELECT'].includes(el.tagName)) {
+    playSound('klik');
+  }
+});
+
+// --- LOGIN SYSTEM ---
+let currentUser = "";
+
+document.getElementById('btnConnect').onclick = () => {
+  const code = document.getElementById('secretCode').value.trim();
+  if (code === "Bungas03" || code === "Khai2020") {
+    currentUser = code;
+    document.getElementById('login').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    showPopup('Welcome!');
+    playSound('welcome');
+    setupDashboard(code);
+  } else {
+    showPopup('Oopsie! Wrong Move!');
+    playSound('error');
+  }
 };
 
-// === Fungsi formatDate ===
-function formatDate(isoStr){
-  const d = new Date(isoStr);
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth()+1).padStart(2, '0');
-  const year = d.getFullYear();
-  return `${year}-${month}-${day}`;
-}
+// --- DASHBOARD SETUP ---
+function setupDashboard(code) {
+  const menu = document.getElementById('menuButtons');
+  menu.innerHTML = "";
 
-// Loading animation
-const loadingText = document.getElementById("loading-text");
-let loadingStr = "Loading . . . Please wait, your data in sync.";
-let i = 0;
-function typeWriter() {
-  if (i < loadingStr.length) {
-    loadingText.innerHTML += loadingStr.charAt(i);
-    i++;
-    setTimeout(typeWriter, 50);
-  } else {
-    document.getElementById("loading-screen").classList.add("hidden");
-    document.getElementById("login-screen").classList.remove("hidden");
-  }
-}
-typeWriter();
-
-// Login
-document.getElementById("login-btn").addEventListener("click", () => {
-  sounds.klik.play();
-  const code = document.getElementById("secret-code").value;
-  if(code === "Bungas03" || code === "Khai2020") {
-    document.getElementById("login-screen").classList.add("hidden");
-    const welcomePop = document.getElementById("welcome-popout");
-    welcomePop.classList.remove("hidden");
-    sounds.welcome.play();
-    setTimeout(() => {
-      welcomePop.classList.add("hidden");
-      document.getElementById("dashboard").classList.remove("hidden");
-      if(code === "Khai2020") {
-        document.querySelector('[data-tab="entry"]').style.display = "none";
-      }
-      loadDatabase();
-    }, 2000);
-  } else {
-    showPopout("Oopsie! Invalid Code", "error");
-  }
-});
-
-// Tab switching
-document.querySelectorAll(".tab-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    sounds.klik.play();
-    const tab = btn.dataset.tab;
-    document.querySelectorAll(".tab-content").forEach(c => c.classList.add("hidden"));
-    document.getElementById(tab+"-tab").classList.remove("hidden");
-    if(tab==="database") loadDatabase();
-  });
-});
-
-// Segment control click
-document.querySelectorAll(".segment-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    sounds.klik.play();
-    document.querySelectorAll(".segment-btn").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-  });
-});
-
-// Entry form submit
-document.getElementById("entry-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  sounds.klik.play();
-  const data = {
-    date: document.getElementById("date").value,
-    driver_or_po: document.getElementById("driver_or_po").value,
-    unit: document.getElementById("unit").value,
-    payment_method: document.querySelector(".segment-btn.active")?.dataset.method || ""
+  const dbBtn = document.createElement('button');
+  dbBtn.textContent = "Database";
+  dbBtn.className = "btn lilac";
+  dbBtn.onclick = () => {
+    document.getElementById('dashboard').classList.add('hidden');
+    document.getElementById('databaseTab').classList.remove('hidden');
   };
-  try {
-    const res = await fetch(WEB_APP_URL, {
-      method: "POST",
-      body: JSON.stringify(data)
-    });
-    const json = await res.json();
-    if(json.status === "success") {
-      showPopout("Data entry success!", "success");
-      document.getElementById("entry-form").reset();
-      document.querySelectorAll(".segment-btn").forEach(b=>b.classList.remove("active"));
-      loadDatabase();
-    } else {
-      showPopout("Data mismatch! Try again :)", "error");
-    }
-  } catch(err) {
-    showPopout("Error connecting to server", "error");
-  }
-});
 
-// Popout message
-function showPopout(message, type) {
-  const pop = document.getElementById("popout-msg");
-  const text = document.getElementById("popout-text");
-  text.textContent = message;
-  pop.classList.remove("hidden");
-  if(type==="success") sounds.success.play();
-  if(type==="error") sounds.error.play();
-  setTimeout(()=>pop.classList.add("hidden"),2000);
+  if (code === "Bungas03") {
+    const inBtn = document.createElement('button');
+    inBtn.textContent = "Input Entry";
+    inBtn.className = "btn lilac";
+    inBtn.onclick = () => {
+      document.getElementById('dashboard').classList.add('hidden');
+      document.getElementById('inputTab').classList.remove('hidden');
+    };
+    menu.appendChild(inBtn);
+  }
+
+  menu.appendChild(dbBtn);
 }
 
-// Load database
-async function loadDatabase(month, year){
-  let url = WEB_APP_URL;
-  if(month && year) url += `?month=${month}&year=${year}`;
+// --- SEGMENT CONTROL (Transfer / Cash) ---
+let paymentMethod = "";
+document.querySelectorAll('.segment').forEach(seg => {
+  seg.onclick = () => {
+    // reset other segments
+    document.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
+    // activate clicked one
+    seg.classList.add('active');
+    seg.classList.add('bounce');
+    setTimeout(() => seg.classList.remove('bounce'), 300);
+    // play sound
+    playSound('klik');
+    // save selection
+    paymentMethod = seg.dataset.value;
+  };
+});
+
+// --- SUBMIT ENTRY ---
+document.getElementById('submitEntry').onclick = async () => {
+  const date = document.getElementById('dateInput').value;
+  const driver = document.getElementById('driverInput').value;
+  const unit = document.getElementById('unitInput').value;
+  if (!date || !driver || !unit || !paymentMethod) {
+    showPopup("Oopsie! Wrong Move!");
+    playSound('error');
+    return;
+  }
+
+  const form = new FormData();
+  form.append('date', date);
+  form.append('driver', driver);
+  form.append('unit', unit);
+  form.append('payment', paymentMethod);
+
+  try {
+    const res = await fetch(SCRIPT_URL, { method: 'POST', body: form });
+    const data = await res.json();
+    if (data.success) {
+      showPopup("Success!");
+      playSound('success');
+    } else {
+      showPopup("Oopsie! Wrong Move!");
+      playSound('error');
+    }
+  } catch (err) {
+    showPopup("Oopsie! Wrong Move!");
+    playSound('error');
+  }
+};
+
+// --- DATABASE SEARCH ---
+document.getElementById('searchBtn').onclick = loadDatabase;
+
+async function loadDatabase() {
+  const monthInput = document.getElementById('filterMonth').value;
+  const tbody = document.querySelector('#dataTable tbody');
+  tbody.innerHTML = '';
+  if (!monthInput) return;
+
+  const [y, m] = monthInput.split('-');
+  const url = `${SCRIPT_URL}?action=list&month=${parseInt(m)}&year=${y}`;
   try {
     const res = await fetch(url);
-    const data = await res.json();
-    renderDatabase(data);
-  } catch(err){
-    showPopout("Error fetching database", "error");
-  }
-}
-
-// Fungsi formatDate
-function formatDate(isoStr){
-  const d = new Date(isoStr);
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth()+1).padStart(2, '0');
-  const year = d.getFullYear();
-  return `${year}-${month}-${day}`;
-}
-
-// Render database dengan Edit/Delete & tanggal format jelas
-function renderDatabase(data){
-  const dbList = document.getElementById("db-list");
-  dbList.innerHTML = "";
-
-  if(data.length === 0) {
-    dbList.innerHTML = "<p>No entries found.</p>";
-    document.getElementById("db-total").textContent = "Total entries: 0";
-    return;
-  }
-
-  const table = document.createElement("table");
-
-  // Header
-  const thead = document.createElement("thead");
-  thead.innerHTML = `
-    <tr>
-      <th>Date</th>
-      <th>Driver/PO</th>
-      <th>Unit</th>
-      <th>Payment Method</th>
-      <th>Actions</th>
-    </tr>
-  `;
-  table.appendChild(thead);
-
-  // Body
-  const tbody = document.createElement("tbody");
-  data.forEach(row => {
-    const tr = document.createElement("tr");
-    tr.dataset.id = row[0];
-    tr.innerHTML = `
-      <td>${formatDate(row[2])}</td>
-      <td>${row[3]}</td>
-      <td>${row[4]}</td>
-      <td>${row[5]}</td>
-      <td>
-        <button class="edit-btn">Edit</button>
-        <button class="delete-btn">Delete</button>
-      </td>
-    `;
-    tbody.appendChild(tr);
-
-    // Event Edit & Delete
-    tr.querySelector(".edit-btn").addEventListener("click", ()=>{
-      // logic edit
+    const json = await res.json();
+    json.data.forEach(row => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${row.date}</td><td>${row.driver}</td><td>${row.unit}</td><td>${row.payment}</td>`;
+      tbody.appendChild(tr);
     });
-    tr.querySelector(".delete-btn").addEventListener("click", ()=>{
-      // logic delete
-    });
-  });
-
-  table.appendChild(tbody);
-  dbList.appendChild(table);
-
-  document.getElementById("db-total").textContent = "Total entries: " + data.length;
-
-  // CSS tambahan supaya table center dan responsive
-  dbList.style.width = "100%";
-  dbList.style.maxWidth = "600px"; // lebar maksimal table
-  dbList.style.margin = "20px auto"; // center horizontal
-  table.style.width = "100%"; // table lebar penuh container
+    document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
+    playSound('success');
+  } catch (err) {
+    playSound('error');
+  }
 }
 
-// Tombol Delete & Confirm
-const deleteBtn = document.getElementById("delete-btn");
-const confirmBtn = document.getElementById("confirm-btn");
+// --- BACK BUTTONS ---
+document.getElementById('backToDashboard1').onclick = () => {
+  document.getElementById('inputTab').classList.add('hidden');
+  document.getElementById('dashboard').classList.remove('hidden');
+  playSound('klik');
+};
 
-// Klik Delete → munculkan tombol Yes
-deleteBtn.addEventListener("click", () => {
-  confirmBtn.classList.remove("hidden");
-});
+document.getElementById('backToDashboard2').onclick = () => {
+  document.getElementById('databaseTab').classList.add('hidden');
+  document.getElementById('dashboard').classList.remove('hidden');
+  playSound('klik');
+};
 
-// Klik Yes → hapus entry yang dicentang
-confirmBtn.addEventListener("click", async () => {
-  const checkedBoxes = document.querySelectorAll(".entry-checkbox:checked");
-  if(checkedBoxes.length === 0){
-    showPopout("Please select at least one entry", "error");
-    return;
-  }
-
-  for(const box of checkedBoxes){
-    const tr = box.closest("tr");
-    const id = tr.dataset.id;
-
-    try {
-      const res = await fetch(WEB_APP_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "delete", id })
-      });
-      const json = await res.json();
-      if(json.status !== "success"){
-        showPopout("Failed to delete ID: " + id, "error");
-      }
-    } catch(err){
-      showPopout("Error deleting ID: " + id, "error");
-    }
-  }
-
-  confirmBtn.classList.add("hidden");
-  loadDatabase(); // refresh tabel
-});
-
-// Render database → tambah checkbox
-function renderDatabase(data){
-  const dbList = document.getElementById("db-list");
-  dbList.innerHTML = "";
-
-  if(data.length === 0) {
-    dbList.innerHTML = "<p>No entries found.</p>";
-    return;
-  }
-
-  const table = document.createElement("table");
-
-  // Header
-  const thead = document.createElement("thead");
-  thead.innerHTML = `
-    <tr>
-      <th>Date</th>
-      <th>Driver/PO</th>
-      <th>Unit</th>
-      <th>Payment Method</th>
-      <th>Select</th>
-    </tr>
-  `;
-  table.appendChild(thead);
-
-  // Body
-  const tbody = document.createElement("tbody");
-  data.forEach(row => {
-    const tr = document.createElement("tr");
-    tr.dataset.id = row[0]; // unique ID
-    tr.innerHTML = `
-      <td>${row[2]}</td>
-      <td>${row[3]}</td>
-      <td>${row[4]}</td>
-      <td>${row[5]}</td>
-      <td><input type="checkbox" class="entry-checkbox"></td>
-    `;
-    tbody.appendChild(tr);
-  });
-
-  table.appendChild(tbody);
-  dbList.appendChild(table);
-  document.getElementById("db-total").textContent = "Total entries: " + data.length;
-}
-
-// Filter per month
-document.getElementById("filter-btn").addEventListener("click", ()=>{
-  sounds.klik.play();
-  const monthYear = document.getElementById("filter-month").value; // YYYY-MM
-  if(monthYear){
-    const [year, month] = monthYear.split("-");
-    loadDatabase(parseInt(month), parseInt(year));
-  } else loadDatabase();
-});
-
-const leaveBtn = document.getElementById("leave-btn");
-
-leaveBtn.addEventListener("click", () => {
-  sounds.klik.play(); // optional sound
-  document.getElementById("dashboard").classList.add("hidden");
-  document.getElementById("login-screen").classList.remove("hidden");
-  document.getElementById("secret-code").value = ""; // kosongkan input
-});
-
+document.getElementById('btnBackMain').onclick = () => {
+  document.getElementById('dashboard').classList.add('hidden');
+  document.getElementById('login').classList.remove('hidden');
+  playSound('klik');
+};
