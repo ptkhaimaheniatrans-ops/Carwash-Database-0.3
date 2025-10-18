@@ -283,72 +283,32 @@ th {
   font-weight: bold;
 }
 
-/* DATABASE TAB CONTAINER */
+/* DATABASE TAB - MOBILE PORTRAIT */
 #databaseTab {
   display: flex;
   flex-direction: column;
-  align-items: center;        /* center secara horizontal */
-  justify-content: center;    /* center secara vertikal */
+  align-items: center;       /* center horizontal */
+  justify-content: flex-start; /* mulai dari atas, jangan center vertikal */
   padding: 10px;
   width: 100%;
   max-width: 360px;
-  overflow-x: auto;
-  min-height: 100vh;
+  min-height: 100vh;         /* full height layar */
+  overflow-y: auto;          /* scroll vertikal jika isi banyak */
   box-sizing: border-box;
 }
 
-/* TABLE STYLING */
+/* Tabel center horizontal */
 #dataTable {
   width: 100%;
+  max-width: 320px;   /* agar tabel tidak terlalu lebar di HP */
+  margin: 10px auto;  /* center horizontal dan beri jarak atas/bawah */
   border-collapse: collapse;
-  table-layout: auto;
   font-size: 14px;
   background: #ffffffb0;
   box-shadow: 0 0 10px rgba(150,150,255,0.3);
 }
 
-/* HEADER & CELL */
-#dataTable th, #dataTable td {
-  border: 1px solid #777;
-  padding: 8px;
-  text-align: center;
-}
-
-#dataTable th {
-  background: #e6d1ff;
-  font-weight: bold;
-}
-
-/* BARIS TANGGAL / GROUP */
-#dataTable td.date-group {
-  font-weight: bold;
-  text-align: left;
-  background: linear-gradient(90deg, #e6d1ff, #f2f0ff);
-  padding: 8px 10px;
-  font-size: 14px;
-  color: #3a2b4d;
-  display: table-cell; /* pastikan tetap render */
-}
-
-/* ICON KALENDER */
-#dataTable td.date-group::before {
-  content: "📅 ";
-  margin-right: 6px;
-  font-size: 16px;
-}
-
-/* SEPARATOR ANTAR GRUP (opsional) */
-#dataTable tr + tr.date-group {
-  border-top: 2px solid #bbaaff;
-}
-
-/* HILANGKAN KOLOM TANGGAL ASLI */
-#dataTable th:first-child,
-#dataTable td:first-child {
-  display: none;
-}
-
-/* RESPONSIVE UNTUK MOBILE */
+/* Responsive untuk layar kecil */
 @media (max-width: 480px) {
   #dataTable {
     font-size: 12px;
@@ -364,4 +324,3 @@ th {
     font-size: 14px;
   }
 }
-
