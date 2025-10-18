@@ -179,18 +179,33 @@ async function loadDatabase() {
     const sortedDates = Object.keys(grouped).sort((a, b) => new Date(a) - new Date(b));
 
     sortedDates.forEach(date => {
-      // Tambahkan baris tanggal besar
-      const dateRow = document.createElement('tr');
-      dateRow.innerHTML = `<td colspan="4" style="font-weight:bold; background:#e6d1ff;">${date}</td>`;
-      tbody.appendChild(dateRow);
+  const entries = grouped[date];
+  const totalEntries = entries.length;
 
-      // Tambahkan baris detail
-      grouped[date].forEach(row => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td></td><td>${row.driver}</td><td>${row.unit}</td><td>${row.payment}</td>`;
-        tbody.appendChild(tr);
-      });
-    });
+  // Baris tanggal dengan total entri
+  const dateRow = document.createElement('tr');
+  dateRow.classList.add('date-group-row');
+  dateRow.innerHTML = `
+    <td colspan="4" class="date-group">
+      ${date} — <span class="entry-count">${totalEntries} ${totalEntries > 1 ? 'entries' : 'entry'}</span>
+    </td>
+  `;
+  tbody.appendChild(dateRow);
+
+  // Tambahkan baris detail di bawahnya
+  entries.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.classList.add('data-row');
+    tr.innerHTML = `<td></td><td>${row.driver}</td><td>${row.unit}</td><td>${row.payment}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  // Garis pemisah antar tanggal (biar rapi)
+  const separatorRow = document.createElement('tr');
+  separatorRow.innerHTML = `<td colspan="4" class="separator"></td>`;
+  tbody.appendChild(separatorRow);
+});
+
 
     document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
     playSound('success');
@@ -217,6 +232,7 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
 
 
 
