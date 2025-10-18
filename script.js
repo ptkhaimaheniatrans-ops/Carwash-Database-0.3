@@ -158,31 +158,38 @@ function renderDatabase(entries) {
   dbTableBody.innerHTML = '';
   let grouped = {};
   entries.forEach(e => {
-    if (!grouped[e.date]) grouped[e.date] = [];
-    grouped[e.date].push(e);
+    // Ubah date string menjadi format "D MMM YYYY"
+    let dateObj = new Date(e.date);
+    let formattedDate = dateObj.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+    e.dateFormatted = formattedDate;
+
+    if (!grouped[formattedDate]) grouped[formattedDate] = [];
+    grouped[formattedDate].push(e);
   });
 
   let total = 0;
-  Object.keys(grouped).sort().forEach(date => {
+  Object.keys(grouped).sort((a,b) => new Date(a) - new Date(b)).forEach(date => {
     let row = document.createElement('tr');
     let th = document.createElement('td');
     th.colSpan = 4;
     th.style.fontWeight = 'bold';
-    th.textContent = date;
+    th.textContent = date; // Group header
     row.appendChild(th);
     dbTableBody.appendChild(row);
 
     grouped[date].forEach(entry => {
       let r = document.createElement('tr');
       r.innerHTML = `
-        <td>${entry.date}</td>
+        <td>${entry.dateFormatted}</td>
         <td>${entry.driver_or_po}</td>
         <td>${entry.unit}</td>
         <td>${entry.payment_method}</td>
       `;
       r.dataset.id = entry.unique_id;
-
-      // Tambah klik untuk delete
       r.addEventListener('click', () => confirmDelete(entry.unique_id));
       dbTableBody.appendChild(r);
       total++;
@@ -236,3 +243,4 @@ searchBtn.addEventListener('click', () => {
       }
     });
 });
+
