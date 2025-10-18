@@ -173,37 +173,53 @@ async function loadDatabase() {
 
     // 🔹 Grouping berdasarkan tanggal
     const grouped = {};
-    data.forEach(row => {
-      const dateKey = row.tanggal; // pastikan key sesuai JSON
-      if (!dateKey) return;
-      const formattedDate = new Date(dateKey).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
-      if (!grouped[formattedDate]) grouped[formattedDate] = [];
-      grouped[formattedDate].push(row);
+data.forEach(row => {
+  const dateKey = row.tanggal; // pastikan key sesuai JSON
+  if (!dateKey) return;
+  const formattedDate = new Date(dateKey).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+  if (!grouped[formattedDate]) grouped[formattedDate] = [];
+  grouped[formattedDate].push(row);
+});
+
+// 🔹 Render tabel
+Object.keys(grouped)
+  .sort((a,b) => new Date(a) - new Date(b))
+  .forEach(date => {
+    const entries = grouped[date];
+
+    // Baris header tanggal (group)
+    const dateRow = document.createElement('tr');
+    dateRow.innerHTML = `
+      <td colspan="4" class="date-group">${date} — ${entries.length} ${entries.length > 1 ? 'entries' : 'entry'}</td>
+    `;
+    tbody.appendChild(dateRow);
+
+    // Baris data masing-masing entry
+    entries.forEach(row => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td></td> <!-- dummy kolom tanggal untuk CSS -->
+        <td>${row.driver || ''}</td>
+        <td>${row.unit || ''}</td>
+        <td>${row.payment || ''}</td>
+      `;
+      tbody.appendChild(tr);
     });
 
-    // 🔹 Render tabel
-    Object.keys(grouped).sort((a,b) => new Date(a) - new Date(b)).forEach(date => {
-      const entries = grouped[date];
+    // Separator antar grup tanggal (opsional)
+    const sepRow = document.createElement('tr');
+    sepRow.innerHTML = `<td colspan="4" class="separator"></td>`;
+    tbody.appendChild(sepRow);
+  });
 
-      const dateRow = document.createElement('tr');
-      dateRow.innerHTML = `<td colspan="3" class="date-group">${date} — ${entries.length} ${entries.length>1?'entries':'entry'}</td>`;
-      tbody.appendChild(dateRow);
+// Update total entry
+document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
+playSound('success');
 
-      entries.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${row.driver}</td><td>${row.unit}</td><td>${row.payment}</td>`;
-        tbody.appendChild(tr);
-      });
-    });
-
-    document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
-    playSound('success');
-
-  } catch(err) {
-    console.error(err);
-    tbody.innerHTML = '<tr><td colspan="3">Failed to load data</td></tr>';
-    playSound('error');
-  }
+} catch(err) {
+  console.error(err);
+  tbody.innerHTML = '<tr><td colspan="4">Failed to load data</td></tr>';
+  playSound('error');
 }
 
 // --- BACK BUTTONS ---
@@ -224,5 +240,6 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
 
 
