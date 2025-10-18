@@ -205,13 +205,27 @@ input[type="month"] {
   font-size: 15px;
 }
 
-/* LOADING PAGE */
-#loadingPage {
+/* LOADING PAGE (TYPEWRITER EFFECT) */
+.typewriter {
   font-family: 'VT323', monospace;
   font-size: 22px;
-  text-align: center;
   color: #333;
-  animation: typewriter 2s steps(30) infinite;
+  overflow: hidden;
+  border-right: 2px solid #333;
+  white-space: nowrap;
+  letter-spacing: 2px;
+  width: 0;
+  text-align: center;
+  animation: typing 2.5s steps(30, end) 0s infinite alternate, blink 0.8s step-end infinite alternate;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 270px; } /* sesuaikan panjang kalimat Loading . . . Please Wait. */
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
 }
 
 @keyframes typewriter {
@@ -263,3 +277,4 @@ button:active, .segment.active {
   max-width: 360px;
   margin: 0 auto;
 }
+
