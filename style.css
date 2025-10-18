@@ -283,22 +283,47 @@ th {
   font-weight: bold;
 }
 
-/* Tambahkan dari sini */
-#dataTable td[colspan="4"] {
+/* === TANGGAL GROUP STYLE DENGAN JUMLAH ENTRI === */
+#dataTable td.date-group {
   text-align: left;
-  padding: 5px 10px;
+  padding: 8px 12px;
   font-family: 'VT323', monospace;
-  font-size: 10px;
-  background: #e6d1ff;
-  border-top: 2px solid #999;
+  font-size: 18px;
+  font-weight: bold;
+  background: linear-gradient(90deg, #e6d1ff, #f2f0ff);
+  border-top: 2px solid #bbaaff;
+  border-bottom: 1px solid #ccc;
+  color: #3a2b4d;
+  position: relative;
+  animation: fadeInDown 0.4s ease;
 }
 
-#dataTable td {
+/* Tambahkan ikon 📅 otomatis */
+#dataTable td.date-group::before {
+  content: "📅 ";
+  margin-right: 6px;
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+/* Gaya jumlah entri */
+#dataTable td.date-group .entry-count {
   font-size: 14px;
+  color: #555;
+  font-weight: normal;
 }
 
-#dataTable tr:nth-child(even) td:not([colspan]) {
-  background-color: #f9f9ff;
+/* Garis pemisah antar grup tanggal */
+#dataTable td.separator {
+  height: 8px;
+  background: linear-gradient(to right, transparent, #e0e0e0, transparent);
+  border: none;
+}
+
+/* Efek muncul halus */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Sembunyikan kolom tanggal di tabel utama */
