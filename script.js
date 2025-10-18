@@ -3,10 +3,10 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIRFJhysCT_pMvDW-yP
 
 // Sound setup
 const sounds = {
-  klik: new Audio('assets/sound/klik.mp3'),
-  success: new Audio('assets/sound/success.mp3'),
-  error: new Audio('assets/sound/error.mp3'),
-  welcome: new Audio('assets/sound/welcome.mp3')
+  klik: new Audio('assets/sounds/klik.mp3'),
+  success: new Audio('assets/sounds/success.mp3'),
+  error: new Audio('assets/sounds/error.mp3'),
+  welcome: new Audio('assets/sounds/welcome.mp3')
 };
 Object.values(sounds).forEach(s => s.preload = 'auto');
 
@@ -183,3 +183,4 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
