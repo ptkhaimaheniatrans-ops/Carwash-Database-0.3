@@ -129,6 +129,18 @@ document.getElementById('submitEntry').onclick = async () => {
     if (data.success) {
       showPopup("Success!");
       playSound('success');
+
+      // 🔄 Kosongkan semua input setelah sukses submit
+      document.getElementById('dateInput').value = '';
+      document.getElementById('driverInput').value = '';
+      document.getElementById('unitInput').value = '';
+      paymentMethod = '';
+
+      // Hilangkan warna aktif di tombol metode pembayaran
+      document.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
+
+      // Fokus kembali ke input tanggal biar cepat input berikutnya
+      document.getElementById('dateInput').focus();
     } else {
       showPopup("Oopsie! Wrong Move!");
       playSound('error');
@@ -183,4 +195,5 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
 
