@@ -1,326 +1,116 @@
-/* FONT SETUP */
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden;
-}
-
-/* BODY BASE */
+/* GENERAL BODY */
 body {
   font-family: monospace;
-  background: linear-gradient(180deg, #d9c2ff, #b7e1ff, #ffffff);
-  color: #3a3a3a;
+  background: linear-gradient(135deg, #8e2de2, #4a00e0, #00c6ff);
+  color: #333;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  text-align: center;
-  padding: 20px;
+  height: 100vh;
+  margin: 0;
+  overflow-y: auto;
 }
 
-/* MAIN CONTAINERS */
-section, div.page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  width: 100%;
-  max-width: 360px;
+.center {
   text-align: center;
-  padding: 15px;
+  width: 95%;
+  max-width: 400px;
   margin: 0 auto;
 }
 
-/* GENERAL ELEMENTS */
-.hidden {
-  display: none !important;
+.vt323 {
+  font-family: 'VT323', monospace;
+  font-size: 2em;
+  margin-bottom: 20px;
 }
 
-button, input, select {
+.monospace {
   font-family: monospace;
-  outline: none;
-  border: 1.5px solid #666;
-  border-radius: 10px;
+}
+
+.hidden { display: none; }
+
+/* INPUTS & BUTTONS */
+input, select, button, textarea {
+  display: block;
+  margin: 10px auto;
   padding: 10px;
-  margin: 8px 0;
-  width: 100%;
-  max-width: 300px;
-  text-align: center;
-  color: #333;
-  background: #fff;
-  transition: all 0.25s ease;
-  box-shadow: 0 0 8px rgba(140, 150, 255, 0.3);
+  width: 90%;
+  font-family: monospace;
+  font-size: 1em;
+  border: 1px solid #333;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
 }
 
-button:hover, input:focus, select:focus {
-  box-shadow: 0 0 15px #8fa6ff, 0 0 25px #b5b0ff;
-  transform: scale(1.02);
-}
+input::placeholder { color: #ccc; }
 
-/* BUTTONS */
-.btn {
-  background: #e2ccff;
-  border: 1.5px solid #696;
+button {
+  background-color: #89CFF0;
+  border: none;
   cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.btn:hover {
-  background: #d5bbff;
+button:hover { box-shadow: 0 0 10px rgba(255,255,255,0.6); }
+button.bounce:active { transform: scale(1.1); }
+
+/* POPUPS */
+#welcome-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border: 2px solid #333;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  z-index: 999;
+  animation: bounce 0.5s;
 }
 
-.btn.pulse {
-  animation: pulseClick 0.3s ease;
+@keyframes bounce {
+  0% { transform: translate(-50%, -50%) scale(0.5); }
+  50% { transform: translate(-50%, -50%) scale(1.1); }
+  100% { transform: translate(-50%, -50%) scale(1); }
 }
 
-/* SEGMENT CONTROL */
-.segment-container {
+/* SEGMENTED CONTROL */
+.segmented-control {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-top: 10px;
-}
-
-.segment {
-  padding: 10px 20px;
-  border: 1.5px solid #666;
-  border-radius: 10px;
-  cursor: pointer;
-  width: 140px;
-  text-align: center;
-  transition: all 0.25s ease;
-  background: #fff;
-  box-shadow: 0 0 6px rgba(150,150,255,0.3);
-}
-
-.segment.active {
-  border-color: #627bff;
-  box-shadow: 0 0 15px #a4b1ff, 0 0 25px #c0aaff;
-}
-
-.segment[data-value="Transfer"].active {
-  background: #b8e1ff; /* Baby Blue */
-}
-
-.segment[data-value="Cash"].active {
-  background: #b4f2b4; /* Soft Green */
-}
-
-/* SEGMENT EFFECTS */
-.segment:hover {
-  transform: scale(1.05);
-}
-
-@keyframes bounceTap {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.15); }
-  70% { transform: scale(0.95); }
-  100% { transform: scale(1); }
-}
-
-.segment.bounce {
-  animation: bounceTap 0.3s ease;
-}
-
-/* BUTTON PULSE EFFECT */
-@keyframes pulseClick {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.1); }
-  70% { transform: scale(0.95); }
-  100% { transform: scale(1); }
-}
-
-/* --- FIXED POPUP CENTER --- */
-.popup {
-  position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  background: #ffffff;
-  border: 1.5px solid #777;
-  box-shadow: 0 0 15px #a4b1ff, 0 0 30px #c0aaff;
-  padding: 15px 30px;
-  border-radius: 12px;
-  font-family: 'VT323', monospace;
-  font-size: 22px;
-  animation: bounceTap 0.4s ease;
-  z-index: 9999;
-}
-
-/* HEADERS */
-h1, h2, h3 {
-  font-family: 'VT323', monospace;
-  text-align: center;
   margin: 10px 0;
+}
+
+.segmented-control input[type="radio"] { display: none; }
+.segmented-control label {
+  padding: 10px 20px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.segmented-control input[type="radio"]:checked + label {
+  background-color: #89CFF0;
 }
 
 /* TABLE */
-table {
-  width: 100%;
-  max-width: 320px;
-  border-collapse: collapse;
-  margin-top: 15px;
-  font-size: 14px;
-  background: #ffffffb0;
-  box-shadow: 0 0 10px rgba(150,150,255,0.3);
-}
+table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9em; }
+th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+th { background: #ddd; }
 
-th, td {
-  border: 1px solid #777;
-  padding: 8px;
-  text-align: center;
-}
-
-th {
-  background: #e6d1ff;
-  font-weight: bold;
-}
-
-/* FILTER */
-.filter-container {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 10px 0;
-}
-
-input[type="month"] {
-  width: 160px;
-}
-
-/* FOOTER / TOTAL */
-#totalEntry {
-  text-align: center;
-  margin-top: 12px;
-  font-weight: bold;
-  font-size: 15px;
-}
-
-/* LOADING PAGE (TYPEWRITER EFFECT) */
-.typewriter {
-  font-family: 'VT323', monospace;
-  font-size: 22px;
-  color: #333;
-  overflow: hidden;
-  border-right: 2px solid #333;
-  white-space: nowrap;
-  letter-spacing: 2px;
-  width: 0;
-  text-align: center;
-  animation: typing 2.5s steps(30, end) 0s infinite alternate, blink 0.8s step-end infinite alternate;
-}
-
-@keyframes typing {
-  from { width: 0; }
-  to { width: 270px; } /* sesuaikan panjang kalimat Loading . . . Please Wait. */
-}
-
-@keyframes blink {
-  50% { border-color: transparent; }
-}
-
-@keyframes typewriter {
-  0% { opacity: 0.2; }
-  50% { opacity: 1; }
-  100% { opacity: 0.2; }
-}
-
-/* FORM LAYOUT */
-.form-group {
+.filter-search {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 300px;
-  margin: 6px 0;
+  gap: 10px;
 }
 
-.form-group label {
-  flex: 1;
-  text-align: left;
-  font-size: 14px;
-}
+#total-entry { font-weight: bold; margin-top: 10px; text-align: center; }
 
-.form-group input,
-.form-group select {
-  flex: 1;
-  text-align: right;
-}
-
-/* GRADIENT GLOW */
-input, select, button, .segment {
-  border: 1.5px solid #6c6c8a;
-  box-shadow: 0 0 8px #a4b1ff;
-}
-
-button:active, .segment.active {
-  box-shadow: 0 0 15px #9ab1ff, 0 0 30px #c7aaff;
-}
-
-/* CENTER ALL ELEMENTS */
-#login, #dashboard, #inputTab, #databaseTab {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-height: 100vh;
-  width: 100%;
-  max-width: 360px;
-  margin: 0 auto;
-}
-
-th {
-  background: #e6d1ff;
-  font-weight: bold;
-}
-
-/* DATABASE TAB - MOBILE PORTRAIT */
-#databaseTab {
-  display: flex;
-  flex-direction: column;
-  align-items: center;       /* center horizontal */
-  justify-content: flex-start; /* mulai dari atas, jangan center vertikal */
-  padding: 10px;
-  width: 100%;
-  max-width: 360px;
-  min-height: 100vh;         /* full height layar */
-  overflow-y: auto;          /* scroll vertikal jika isi banyak */
-  box-sizing: border-box;
-}
-
-/* Tabel center horizontal */
-#dataTable {
-  width: 100%;
-  max-width: 320px;   /* agar tabel tidak terlalu lebar di HP */
-  margin: 10px auto;  /* center horizontal dan beri jarak atas/bawah */
-  border-collapse: collapse;
-  font-size: 14px;
-  background: #ffffffb0;
-  box-shadow: 0 0 10px rgba(150,150,255,0.3);
-}
-
-/* Responsive untuk layar kecil */
-@media (max-width: 480px) {
-  #dataTable {
-    font-size: 12px;
-    max-width: 95%;
-  }
-
-  #dataTable td.date-group {
-    font-size: 14px;
-    padding: 6px 10px;
-  }
-
-  #dataTable td.date-group::before {
-    font-size: 14px;
-  }
+/* RESPONSIVE */
+@media only screen and (max-width: 480px) {
+  input, button, select { width: 95%; }
 }
