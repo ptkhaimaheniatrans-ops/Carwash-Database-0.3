@@ -168,44 +168,44 @@ async function loadDatabase() {
     const json = await res.json();
     const data = json.data;
 
-    // 🔹 Kelompokkan data berdasarkan tanggal
+    // Kelompokkan data berdasarkan tanggal
     const grouped = {};
     data.forEach(row => {
       if (!grouped[row.date]) grouped[row.date] = [];
       grouped[row.date].push(row);
     });
 
-    // 🔹 Tampilkan dalam urutan tanggal (ascending)
+    // Urutkan tanggal
     const sortedDates = Object.keys(grouped).sort((a, b) => new Date(a) - new Date(b));
 
-    sortedDates.forEach(date => {
-  const entries = grouped[date];
-  const totalEntries = entries.length;
+    // Tampilkan tiap grup tanggal
+    sortedDates.forEach((date, index) => {
+      const entries = grouped[date];
+      const totalEntries = entries.length;
 
-  // Baris tanggal dengan total entri
-  const dateRow = document.createElement('tr');
-  dateRow.classList.add('date-group-row');
-  dateRow.innerHTML = `
-    <td colspan="4" class="date-group">
-      ${date} — <span class="entry-count">${totalEntries} ${totalEntries > 1 ? 'entries' : 'entry'}</span>
-    </td>
-  `;
-  tbody.appendChild(dateRow);
+      // Tambahkan header tanggal + jumlah entri
+      const dateRow = document.createElement('tr');
+      dateRow.innerHTML = `
+        <td colspan="4" class="date-group">
+          ${date} — <span class="entry-count">${totalEntries} ${totalEntries > 1 ? 'entries' : 'entry'}</span>
+        </td>
+      `;
+      tbody.appendChild(dateRow);
 
-  // Tambahkan baris detail di bawahnya
-  entries.forEach(row => {
-    const tr = document.createElement('tr');
-    tr.classList.add('data-row');
-    tr.innerHTML = `<td></td><td>${row.driver}</td><td>${row.unit}</td><td>${row.payment}</td>`;
-    tbody.appendChild(tr);
-  });
+      // Tambahkan baris data
+      entries.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td></td><td>${row.driver}</td><td>${row.unit}</td><td>${row.payment}</td>`;
+        tbody.appendChild(tr);
+      });
 
-  // Garis pemisah antar tanggal (biar rapi)
-  const separatorRow = document.createElement('tr');
-  separatorRow.innerHTML = `<td colspan="4" class="separator"></td>`;
-  tbody.appendChild(separatorRow);
-});
-
+      // Tambahkan separator kecuali di tanggal terakhir
+      if (index < sortedDates.length - 1) {
+        const separatorRow = document.createElement('tr');
+        separatorRow.innerHTML = `<td colspan="4" class="separator"></td>`;
+        tbody.appendChild(separatorRow);
+      }
+    });
 
     document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
     playSound('success');
@@ -232,6 +232,7 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
 
 
 
