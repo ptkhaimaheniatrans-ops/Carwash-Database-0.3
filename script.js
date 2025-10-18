@@ -1,248 +1,238 @@
-// GOOGLE APPS SCRIPT DEPLOYED URL
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIRFJhysCT_pMvDW-yPLD-w6gSdSh4UTMhMU_5pwPyGhBIjfBwtx00NhpozaDv_0EVEw/exec"; // replace with your Apps Script Web App URL
+// ============================
+// GLOBAL VARIABLES
+// ============================
+const secretCodes = { "Bungas03": "user1", "Khai2020": "user2" };
+let currentUser = null;
 
-// Sound setup
-const sounds = {
-  klik: new Audio('assets/sounds/klik.mp3'),
-  success: new Audio('assets/sounds/success.mp3'),
-  error: new Audio('assets/sounds/error.mp3'),
-  welcome: new Audio('assets/sounds/welcome.mp3')
-};
-Object.values(sounds).forEach(s => s.preload = 'auto');
+// ELEMENTS
+const loadingText = document.getElementById('loading-text');
+const loadingPage = document.getElementById('loading');
+const loginPage = document.getElementById('login-page');
+const connectBtn = document.getElementById('connect-btn');
+const secretInput = document.getElementById('secret-code');
+const welcomePopup = document.getElementById('welcome-popup');
+const dashboard = document.getElementById('dashboard');
+const inputEntryTab = document.getElementById('input-entry-tab');
+const databaseTab = document.getElementById('database-tab');
+const inputEntry = document.getElementById('input-entry');
+const database = document.getElementById('database');
+const backEntry = document.getElementById('back-entry');
+const backDB = document.getElementById('back-db');
+const entryForm = document.getElementById('entry-form');
+const dbTableBody = document.querySelector('#db-table tbody');
+const totalEntry = document.getElementById('total-entry');
+const filterMonth = document.getElementById('filter-month');
+const searchBtn = document.getElementById('search-btn');
 
-function playSound(type) {
-  const s = sounds[type];
-  if (s) {
-    s.currentTime = 0;
-    s.play().catch(()=>{});
-  }
-}
+// AUDIO
+const soundClick = document.getElementById('sound-click');
+const soundWelcome = document.getElementById('sound-welcome');
+const soundSuccess = document.getElementById('sound-success');
+const soundError = document.getElementById('sound-error');
 
-function showPopup(text) {
-  const pop = document.createElement('div');
-  pop.className = 'popup';
-  pop.textContent = text;
-  document.body.appendChild(pop);
-  setTimeout(() => pop.remove(), 2500);
-}
+// WEB APP URL (ganti dengan deployment Apps Script Web App)
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxCjshGDhCLD71lWeWlVZ8-D7GJIWut1kpd4uSmruvMNpK-brBs8kraI2ccPEAGDA7WCw/exec";
 
-// 🎵 Play click sound for every button globally
-document.addEventListener('click', e => {
-  const el = e.target.closest('button, .btn');
-  if (el) {
-    playSound('klik');
-    el.classList.add('pulse');
-    setTimeout(() => el.classList.remove('pulse'), 400);
-  }
-});
-
-// 🎵 Also trigger sound on input focus (date, dropdown, etc.)
-document.addEventListener('focusin', e => {
-  const el = e.target;
-  if (['INPUT', 'SELECT'].includes(el.tagName)) {
-    playSound('klik');
-  }
-});
-
-// --- LOGIN SYSTEM ---
-let currentUser = "";
-
-document.getElementById('btnConnect').onclick = () => {
-  const code = document.getElementById('secretCode').value.trim();
-  if (code === "Bungas03" || code === "Khai2020") {
-    currentUser = code;
-    document.getElementById('login').classList.add('hidden');
-    document.getElementById('dashboard').classList.remove('hidden');
-    showPopup('Welcome!');
-    playSound('welcome');
-    setupDashboard(code);
+// ============================
+// LOADING TYPEWRITER
+// ============================
+let loadStr = "Loading . . . Please Wait.";
+let i = 0;
+function typeWriter() {
+  if (i < loadStr.length) {
+    loadingText.innerHTML += loadStr.charAt(i);
+    i++;
+    setTimeout(typeWriter, 100);
   } else {
-    showPopup('Oopsie! Wrong Move!');
-    playSound('error');
+    setTimeout(() => {
+      loadingPage.classList.add('hidden');
+      loginPage.classList.remove('hidden');
+    }, 5000);
   }
-};
+}
+typeWriter();
 
-// --- DASHBOARD SETUP ---
-function setupDashboard(code) {
-  const menu = document.getElementById('menuButtons');
-  menu.innerHTML = "";
+// ============================
+// LOGIN
+// ============================
+connectBtn.addEventListener('click', () => {
+  soundClick.play();
+  const code = secretInput.value.trim();
+  if (secretCodes[code]) {
+    currentUser = secretCodes[code];
+    loginPage.classList.add('hidden');
+    welcomePopup.classList.remove('hidden');
+    soundWelcome.play();
+    setTimeout(() => {
+      welcomePopup.classList.add('hidden');
+      dashboard.classList.remove('hidden');
+      if (currentUser === 'user2') inputEntryTab.style.display = 'none';
+    }, 2000);
+  } else {
+    soundError.play();
+    alert("Oopsie! Wrong Move!");
+  }
+});
 
-  const dbBtn = document.createElement('button');
-  dbBtn.textContent = "Database";
-  dbBtn.className = "btn lilac";
-  dbBtn.onclick = () => {
-    document.getElementById('dashboard').classList.add('hidden');
-    document.getElementById('databaseTab').classList.remove('hidden');
+// ============================
+// DASHBOARD TABS
+// ============================
+inputEntryTab.addEventListener('click', () => {
+  dashboard.classList.add('hidden');
+  inputEntry.classList.remove('hidden');
+});
+
+databaseTab.addEventListener('click', () => {
+  dashboard.classList.add('hidden');
+  database.classList.remove('hidden');
+  loadDatabase();
+});
+
+backEntry.addEventListener('click', () => {
+  inputEntry.classList.add('hidden');
+  dashboard.classList.remove('hidden');
+});
+
+backDB.addEventListener('click', () => {
+  database.classList.add('hidden');
+  dashboard.classList.remove('hidden');
+});
+
+// ============================
+// SUBMIT INPUT ENTRY
+// ============================
+entryForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  soundClick.play();
+
+  const data = {
+    date: document.getElementById('entry-date').value,
+    driver_or_po: document.getElementById('entry-driver').value,
+    unit: document.getElementById('entry-unit').value,
+    payment_method: document.querySelector('input[name="payment"]:checked').value
   };
 
-  if (code === "Bungas03") {
-    const inBtn = document.createElement('button');
-    inBtn.textContent = "Input Entry";
-    inBtn.className = "btn lilac";
-    inBtn.onclick = () => {
-      document.getElementById('dashboard').classList.add('hidden');
-      document.getElementById('inputTab').classList.remove('hidden');
-    };
-    menu.appendChild(inBtn);
-  }
+  fetch(WEB_APP_URL, {
+    method: 'POST',
+    body: JSON.stringify({action: 'add', entry: data}),
+    headers: {'Content-Type': 'application/json'}
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.status === 'success') {
+      soundSuccess.play();
+      alert("Success! Entry added.");
+      entryForm.reset();
+      loadDatabase(); // refresh table
+    } else {
+      soundError.play();
+      alert("Error: " + res.message);
+    }
+  })
+  .catch(() => {
+    soundError.play();
+    alert("Network error!");
+  });
+});
 
-  menu.appendChild(dbBtn);
+// ============================
+// LOAD DATABASE
+// ============================
+function loadDatabase() {
+  fetch(`${WEB_APP_URL}?action=get`)
+    .then(res => res.json())
+    .then(res => {
+      if (res.status === 'success') {
+        renderDatabase(res.data);
+      } else {
+        alert("Error loading database!");
+      }
+    })
+    .catch(() => alert("Network error!"));
 }
 
-// --- SEGMENT CONTROL (Transfer / Cash) ---
-let paymentMethod = "";
-document.querySelectorAll('.segment').forEach(seg => {
-  seg.onclick = () => {
-    // reset other segments
-    document.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
-    // activate clicked one
-    seg.classList.add('active');
-    seg.classList.add('bounce');
-    setTimeout(() => seg.classList.remove('bounce'), 300);
-    // play sound
-    playSound('klik');
-    // save selection
-    paymentMethod = seg.dataset.value;
-  };
-});
-
-// --- SUBMIT ENTRY ---
-document.getElementById('submitEntry').onclick = async () => {
-  const date = document.getElementById('dateInput').value;
-  const driver = document.getElementById('driverInput').value;
-  const unit = document.getElementById('unitInput').value;
-  if (!date || !driver || !unit || !paymentMethod) {
-    showPopup("Oopsie! Wrong Move!");
-    playSound('error');
-    return;
-  }
-
-  const form = new FormData();
-  form.append('date', date);
-  form.append('driver', driver);
-  form.append('unit', unit);
-  form.append('payment', paymentMethod);
-
-  try {
-    const res = await fetch(SCRIPT_URL, { method: 'POST', body: form });
-    const data = await res.json();
-    if (data.success) {
-      showPopup("Success!");
-      playSound('success');
-
-      // 🔄 Kosongkan semua input setelah sukses submit
-      document.getElementById('dateInput').value = '';
-      document.getElementById('driverInput').value = '';
-      document.getElementById('unitInput').value = '';
-      paymentMethod = '';
-
-      // Hilangkan warna aktif di tombol metode pembayaran
-      document.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
-
-      // Fokus kembali ke input tanggal biar cepat input berikutnya
-      document.getElementById('dateInput').focus();
-    } else {
-      showPopup("Oopsie! Wrong Move!");
-      playSound('error');
-    }
-  } catch (err) {
-    showPopup("Oopsie! Wrong Move!");
-    playSound('error');
-  }
-};
-
-// --- DATABASE SEARCH ---
-async function loadDatabase() {
-  const monthInput = document.getElementById('filterMonth').value;
-  const tbody = document.querySelector('#dataTable tbody');
-  tbody.innerHTML = '';
-  if (!monthInput) return;
-
-  const [y, m] = monthInput.split('-');
-  const url = `${SCRIPT_URL}?action=list&month=${parseInt(m)}&year=${y}`;
-
-  try {
-    const res = await fetch(url);
-    const json = await res.json();
-    const data = json.data;
-
-    if (!data || data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="3">No data found</td></tr>';
-      return;
-    }
-
-    // 🔹 Grouping berdasarkan tanggal
-    const grouped = {};
-data.forEach(row => {
-  const dateKey = row.tanggal; // pastikan key sesuai JSON
-  if (!dateKey) return;
-  const formattedDate = new Date(dateKey).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
-  if (!grouped[formattedDate]) grouped[formattedDate] = [];
-  grouped[formattedDate].push(row);
-});
-
-// 🔹 Render tabel
-Object.keys(grouped)
-  .sort((a,b) => new Date(a) - new Date(b))
-  .forEach(date => {
-    const entries = grouped[date];
-
-    // Baris header tanggal (group)
-    const dateRow = document.createElement('tr');
-    dateRow.innerHTML = `
-      <td></td> <!-- dummy invisible -->
-      <td colspan="3" class="date-group">${date} — ${entries.length} ${entries.length > 1 ? 'entries' : 'entry'}</td>
-    `;
-    tbody.appendChild(dateRow);
-
-    // Baris data masing-masing entry
-    entries.forEach(row => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td></td> <!-- dummy kolom tanggal untuk CSS -->
-        <td>${row.driver || ''}</td>
-        <td>${row.unit || ''}</td>
-        <td>${row.payment || ''}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-
-    // Separator antar grup tanggal (opsional)
-    const sepRow = document.createElement('tr');
-    sepRow.innerHTML = `<td colspan="4" class="separator"></td>`;
-    tbody.appendChild(sepRow);
+// ============================
+// RENDER DATABASE TABLE (grouped by date)
+// ============================
+function renderDatabase(entries) {
+  dbTableBody.innerHTML = '';
+  let grouped = {};
+  entries.forEach(e => {
+    if (!grouped[e.date]) grouped[e.date] = [];
+    grouped[e.date].push(e);
   });
 
-// Update total entry
-document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
-    playSound('success');
-  } catch(err) {                 // buka catch 3
-    console.error(err);
-    tbody.innerHTML = '<tr><td colspan="4">Failed to load data</td></tr>';
-    playSound('error');
-  }                               // tutup catch 3
-}                                 // tutup fungsi 1
+  let total = 0;
+  Object.keys(grouped).sort().forEach(date => {
+    let row = document.createElement('tr');
+    let th = document.createElement('td');
+    th.colSpan = 4;
+    th.style.fontWeight = 'bold';
+    th.textContent = date;
+    row.appendChild(th);
+    dbTableBody.appendChild(row);
 
-// --- BACK BUTTONS ---
-document.getElementById('backToDashboard1').onclick = () => {
-  document.getElementById('inputTab').classList.add('hidden');
-  document.getElementById('dashboard').classList.remove('hidden');
-  playSound('klik');
-};
+    grouped[date].forEach(entry => {
+      let r = document.createElement('tr');
+      r.innerHTML = `
+        <td>${entry.date}</td>
+        <td>${entry.driver_or_po}</td>
+        <td>${entry.unit}</td>
+        <td>${entry.payment_method}</td>
+      `;
+      r.dataset.id = entry.unique_id;
 
-document.getElementById('backToDashboard2').onclick = () => {
-  document.getElementById('databaseTab').classList.add('hidden');
-  document.getElementById('dashboard').classList.remove('hidden');
-  playSound('klik');
-};
+      // Tambah klik untuk delete
+      r.addEventListener('click', () => confirmDelete(entry.unique_id));
+      dbTableBody.appendChild(r);
+      total++;
+    });
+  });
 
-document.getElementById('btnBackMain').onclick = () => {
-  document.getElementById('dashboard').classList.add('hidden');
-  document.getElementById('login').classList.remove('hidden');
-  playSound('klik');
-};
+  totalEntry.textContent = `Total: ${total}`;
+}
 
+// ============================
+// DELETE CONFIRM POPUP
+// ============================
+function confirmDelete(uniqueId) {
+  if (confirm("Are you sure you want to delete this entry?")) {
+    soundClick.play();
+    fetch(WEB_APP_URL, {
+      method: 'POST',
+      body: JSON.stringify({action: 'delete', uniqueId: uniqueId}),
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.status === 'success') {
+        soundSuccess.play();
+        loadDatabase();
+      } else {
+        soundError.play();
+        alert("Error: " + res.message);
+      }
+    })
+    .catch(() => {
+      soundError.play();
+      alert("Network error!");
+    });
+  }
+}
 
-
-
-
+// ============================
+// FILTER DATABASE
+// ============================
+searchBtn.addEventListener('click', () => {
+  soundClick.play();
+  const filter = filterMonth.value; // format YYYY-MM
+  fetch(`${WEB_APP_URL}?action=get`)
+    .then(res => res.json())
+    .then(res => {
+      if (res.status === 'success') {
+        let data = res.data;
+        if (filter) data = data.filter(e => e.date.startsWith(filter));
+        renderDatabase(data);
+      }
+    });
+});
