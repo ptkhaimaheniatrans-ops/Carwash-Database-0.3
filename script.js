@@ -169,11 +169,13 @@ async function loadDatabase() {
     const data = json.data;
 
     // Kelompokkan data berdasarkan tanggal
+    console.log(data[0]); // Tambahkan ini sementara
     const grouped = {};
-    data.forEach(row => {
-      if (!grouped[row.date]) grouped[row.date] = [];
-      grouped[row.date].push(row);
-    });
+data.forEach(row => {
+  const dateKey = row.date || row.tanggal || row.Date || row.Tanggal; // fleksibel
+  if (!grouped[dateKey]) grouped[dateKey] = [];
+  grouped[dateKey].push(row);
+});
 
     // Urutkan tanggal
     const sortedDates = Object.keys(grouped).sort((a, b) => new Date(a) - new Date(b));
@@ -195,7 +197,7 @@ async function loadDatabase() {
       // Tambahkan baris data
       entries.forEach(row => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td></td><td>${row.driver}</td><td>${row.unit}</td><td>${row.payment}</td>`;
+        tr.innerHTML = `<td></td><td>${row.driver || row.Driver}</td><td>${row.unit || row.Unit}</td><td>${row.payment || row.Payment}</td>`;
         tbody.appendChild(tr);
       });
 
@@ -232,6 +234,7 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
 
 
 
