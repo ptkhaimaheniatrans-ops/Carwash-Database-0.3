@@ -164,15 +164,17 @@ async function loadDatabase() {
   const url = `${SCRIPT_URL}?action=list&month=${parseInt(m)}&year=${y}`;
 
   try {
-    const res = await fetch(url);
-    const json = await res.json();
-    const data = json.data;
+  const res = await fetch(url);
+  const json = await res.json();
+  const data = json.data;
+
+  console.log("📦 Data dari server:", data); // ✅ Tambahkan log ini
 
     // Kelompokkan data berdasarkan tanggal
     console.log(data[0]); // Tambahkan ini sementara
     const grouped = {};
 data.forEach(row => {
-  const dateKey = row.date || row.tanggal || row.Date || row.Tanggal; // fleksibel
+  const dateKey = row.Tanggal; // gunakan persis nama dari JSON
   if (!grouped[dateKey]) grouped[dateKey] = [];
   grouped[dateKey].push(row);
 });
@@ -197,8 +199,12 @@ data.forEach(row => {
       // Tambahkan baris data
       entries.forEach(row => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td></td><td>${row.driver || row.Driver}</td><td>${row.unit || row.Unit}</td><td>${row.payment || row.Payment}</td>`;
-        tbody.appendChild(tr);
+        tr.innerHTML = `
+  <td></td>
+  <td>${row.Driver}</td>
+  <td>${row.Unit}</td>
+  <td>${row.Payment}</td>
+`;
       });
 
       // Tambahkan separator kecuali di tanggal terakhir
@@ -234,6 +240,7 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
 
 
 
