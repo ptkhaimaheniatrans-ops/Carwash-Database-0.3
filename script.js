@@ -172,51 +172,57 @@ async function loadDatabase() {
     }
 
     // 🔹 Grouping berdasarkan tanggal
-    const grouped = {};
-    data.forEach(row => {
-      const dateKey = row.Tanggal; // gunakan key persis dari JSON
-      if (!dateKey) return;
+const grouped = {};
 
-      const formattedDate = new Date(dateKey).toLocaleDateString('en-GB', {
-        day: 'numeric', month: 'short', year: 'numeric'
-      });
+data.forEach(row => {
+  const dateKey = row.tanggal; // pakai key JSON yang benar
+  if (!dateKey) return; // skip jika kosong
 
-      if (!grouped[formattedDate]) grouped[formattedDate] = [];
-      grouped[formattedDate].push(row);
-    });
+  const formattedDate = new Date(dateKey).toLocaleDateString('en-GB', {
+    day: 'numeric', month: 'short', year: 'numeric'
+  });
 
-    // Urutkan tanggal
-    const sortedDates = Object.keys(grouped).sort((a,b)=> new Date(a) - new Date(b));
+  if (!grouped[formattedDate]) grouped[formattedDate] = [];
+  grouped[formattedDate].push(row);
+});
 
-    sortedDates.forEach(date => {
-      const entries = grouped[date];
+// Setelah grouping selesai, baru buat baris <tr> untuk tabel
+const tbody = document.querySelector('#dataTable tbody');
+tbody.innerHTML = '';
 
-      // Tambahkan baris header tanggal
-      const dateRow = document.createElement('tr');
-      dateRow.innerHTML = `
-        <td colspan="3" class="date-group">${date} — ${entries.length} ${entries.length > 1 ? 'entries' : 'entry'}</td>
-      `;
-      tbody.appendChild(dateRow);
+Object.keys(grouped).sort((a,b) => new Date(a) - new Date(b)).forEach(date => {
+  const entries = grouped[date];
 
-      // Tambahkan baris data (Driver, Unit, Payment)
-      entries.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${row.Driver}</td>
-          <td>${row.Unit}</td>
-          <td>${row.Payment}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    });
+  // Baris header tanggal
+  const dateRow = document.createElement('tr');
+  dateRow.innerHTML = `
+    <td colspan="3" class="date-group">
+      ${date} — ${entries.length} ${entries.length > 1 ? 'entries' : 'entry'}
+    </td>
+  `;
+  tbody.appendChild(dateRow);
 
-    document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
-    playSound('success');
+  // Baris data
+  entries.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${row.driver}</td>
+      <td>${row.unit}</td>
+      <td>${row.payment}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+});
+
+// Pasang event listener untuk tombol Search
+document.getElementById('searchBtn').onclick = loadDatabase;
+  document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
+  playSound('success');
 
   } catch(err) {
-    console.error(err);
-    tbody.innerHTML = '<tr><td colspan="3">Failed to load data</td></tr>';
-    playSound('error');
+  console.error(err);
+  tbody.innerHTML = '<tr><td colspan="3">Failed to load data</td></tr>';
+  playSound('error');
   }
 }
 
@@ -238,4 +244,5 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
 
