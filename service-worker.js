@@ -1,20 +1,24 @@
-const CACHE_NAME = "carwash-db-v3";
+// Nama cache
+const CACHE_NAME = "carwash-cache-v1";
+
+// Semua file yang akan disimpan offline
 const ASSETS = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./script.js",
-  "./manifest.json",
-  "./assets/icons/icon-192.png.PNG",
-  "./assets/icons/icon-512.jpg.jpeg",
-  "./assets/sounds/klik.mp3",
-  "./assets/sounds/success.mp3",
-  "./assets/sounds/error.mp3",
-  "./assets/sounds/welcome.mp3"
+  "/",
+  "/index.html",
+  "/style.css",
+  "/script.js",
+  "/manifest.json",
+  "/assets/icons/icon-192.png",
+  "/assets/sounds/icon-512.png.jpeg",  // ✅ homescreen icon ikut dicache
+  "/assets/sound/success.mp3",
+  "/assets/sound/error.mp3",
+  "/assets/sound/klik.mp3",
+  "/assets/sound/welcome.mp3"
 ];
 
 // Install Service Worker
 self.addEventListener("install", event => {
+  console.log("Service Worker: Installing…");
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
   );
@@ -22,20 +26,19 @@ self.addEventListener("install", event => {
 
 // Activate Service Worker
 self.addEventListener("activate", event => {
+  console.log("Service Worker: Activated");
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
       )
     )
   );
 });
 
-// Fetch Offline Support
+// Fetch (serve from cache first, fallback to network)
 self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request).then(response => response || fetch(event.request))
   );
 });
-
-
