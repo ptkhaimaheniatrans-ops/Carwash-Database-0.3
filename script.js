@@ -186,50 +186,50 @@ data.forEach(row => {
 });
 
     // Urutkan tanggal
-    const sortedDates = Object.keys(grouped).sort((a, b) => new Date(a) - new Date(b));
+const sortedDates = Object.keys(grouped).sort((a, b) => new Date(a) - new Date(b));
 
-    // Tampilkan tiap grup tanggal
-    sortedDates.forEach((date, index) => {
-      const entries = grouped[date];
-      const totalEntries = entries.length;
+// Tampilkan tiap grup tanggal
+sortedDates.forEach((date, index) => {
+  const entries = grouped[date];
+  const totalEntries = entries.length;
 
-      // Tambahkan header tanggal + jumlah entri
-      const dateRow = document.createElement('tr');
-      dateRow.innerHTML = `
-        <td colspan="4" class="date-group">
-          ${date} — <span class="entry-count">${totalEntries} ${totalEntries > 1 ? 'entries' : 'entry'}</span>
-        </td>
-      `;
-      tbody.appendChild(dateRow);
+  // Tambahkan header tanggal + jumlah entri
+  const dateRow = document.createElement('tr');
+  dateRow.innerHTML = `
+    <td colspan="4" class="date-group">
+      ${date} — <span class="entry-count">${totalEntries} ${totalEntries > 1 ? 'entries' : 'entry'}</span>
+    </td>
+  `;
+  tbody.appendChild(dateRow);
 
-      // Tambahkan baris data
-      entries.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-  <td></td>
-  <td>${row.Driver}</td>
-  <td>${row.Unit}</td>
-  <td>${row.Payment}</td>
-`;
+  // Tambahkan baris data di bawah tanggal
+  entries.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td></td>
+      <td>${row.Driver}</td>
+      <td>${row.Unit}</td>
+      <td>${row.Payment}</td>
+    `;
     tbody.appendChild(tr);
   });
+
+// Tambahkan separator antar tanggal (kecuali tanggal terakhir)
+if (index < sortedDates.length - 1) {
+  const separatorRow = document.createElement('tr');
+  separatorRow.innerHTML = `<td colspan="4" class="separator"></td>`;
+  tbody.appendChild(separatorRow);
+}
 });
 
-      // Tambahkan separator kecuali di tanggal terakhir
-      if (index < sortedDates.length - 1) {
-        const separatorRow = document.createElement('tr');
-        separatorRow.innerHTML = `<td colspan="4" class="separator"></td>`;
-        tbody.appendChild(separatorRow);
-      }
-    });
+// Setelah loop selesai
+document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
+playSound('success');
 
-    document.getElementById('totalEntry').textContent = `Total: ${json.total}`;
-    playSound('success');
-  } catch (err) {
-    playSound('error');
-  }
+} catch (err) {
+  playSound('error');
 }
-
+  
 // --- BACK BUTTONS ---
 document.getElementById('backToDashboard1').onclick = () => {
   document.getElementById('inputTab').classList.add('hidden');
@@ -248,6 +248,7 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
 
 
 
