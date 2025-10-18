@@ -278,23 +278,23 @@ button:active, .segment.active {
   margin: 0 auto;
 }
 
-/* PAGE LOGO - posisi di atas center */
+/* PAGE LOGO - posisi atas tengah (lebih besar) */
 .page-logo {
   position: absolute;
-  top: 20px;                /* jarak dari atas layar */
-  left: 50%;                /* center horizontal */
+  top: 25px;                 /* jarak dari atas */
+  left: 50%;                 /* posisikan di tengah horizontal */
   transform: translateX(-50%);
-  width: 100px;             /* ✅ perbesar ukuran */
-  height: auto;             /* biar proporsional */
+  width: 140px;              /* 🔹 perbesar ukuran di layar besar */
+  height: auto;              /* proporsional */
   object-fit: contain;
   animation: fadeIn 1s ease;
   z-index: 10;
 }
 
-/* Responsif untuk HP */
+/* Responsif: kecilkan di HP biar tidak ganggu teks */
 @media (max-width: 480px) {
   .page-logo {
-    width: 80px;            /* sedikit lebih kecil di HP */
+    width: 100px;            /* masih terlihat besar di HP */
     top: 15px;
   }
 }
