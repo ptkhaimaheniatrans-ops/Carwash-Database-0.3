@@ -287,13 +287,13 @@ th {
 #databaseTab {
   display: flex;
   flex-direction: column;
-  align-items: stretch;         /* tabel ikut lebar container */
-  justify-content: flex-start;  /* agar table di atas */
+  align-items: center;        /* center secara horizontal */
+  justify-content: center;    /* center secara vertikal */
   padding: 10px;
   width: 100%;
-  max-width: 360px;             /* sesuai layout mobile */
-  overflow-x: auto;             /* jika tabel lebar */
-  min-height: 100vh;            /* biar full screen */
+  max-width: 360px;
+  overflow-x: auto;
+  min-height: 100vh;
   box-sizing: border-box;
 }
 
@@ -364,3 +364,4 @@ th {
     font-size: 14px;
   }
 }
+
