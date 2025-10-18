@@ -283,7 +283,7 @@ th {
   font-weight: bold;
 }
 
-/* === TANGGAL GROUP STYLE DENGAN JUMLAH ENTRI === */
+/* === TANGGAL GROUP STYLE === */
 #dataTable td.date-group {
   text-align: left;
   padding: 8px 12px;
@@ -298,7 +298,6 @@ th {
   animation: fadeInDown 0.4s ease;
 }
 
-/* Tambahkan ikon 📅 otomatis */
 #dataTable td.date-group::before {
   content: "📅 ";
   margin-right: 6px;
@@ -306,27 +305,24 @@ th {
   vertical-align: middle;
 }
 
-/* Gaya jumlah entri */
 #dataTable td.date-group .entry-count {
   font-size: 14px;
   color: #555;
   font-weight: normal;
 }
 
-/* Garis pemisah antar grup tanggal */
 #dataTable td.separator {
   height: 8px;
   background: linear-gradient(to right, transparent, #e0e0e0, transparent);
   border: none;
 }
 
-/* Efek muncul halus */
 @keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Sembunyikan kolom tanggal di tabel utama */
+/* Sembunyikan kolom tanggal asli */
 #dataTable th:first-child,
 #dataTable td:first-child {
   display: none;
