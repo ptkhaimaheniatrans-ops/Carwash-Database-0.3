@@ -279,21 +279,23 @@ button:active, .segment.active {
 }
 
 .page-logo {
-  position: absolute;
-  bottom: 25px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: absolute !important;
+  bottom: 25px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
   width: 140px;
   height: auto;
   object-fit: contain;
   animation: fadeIn 1s ease;
   z-index: 10;
-  filter: invert(1) brightness(0.8) drop-shadow(0 0 8px rgba(0,0,0,0.3)); /* ubah putih → hitam */
+  filter: invert(1) brightness(0.8);
 }
 
-@media (max-width: 480px) {
+/* Responsif: semua HP */
+@media (max-width: 768px) {
   .page-logo {
-    width: 600px;
+    width: 100px;
     bottom: 20px;
   }
 }
+
