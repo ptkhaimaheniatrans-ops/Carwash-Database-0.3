@@ -283,7 +283,43 @@ th {
   font-weight: bold;
 }
 
-/* Baris tanggal sebagai group view */
+/* DATABASE TAB CONTAINER */
+#databaseTab {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;         /* tabel ikut lebar container */
+  justify-content: flex-start;  /* agar table di atas */
+  padding: 10px;
+  width: 100%;
+  max-width: 360px;             /* sesuai layout mobile */
+  overflow-x: auto;             /* jika tabel lebar */
+  min-height: 100vh;            /* biar full screen */
+  box-sizing: border-box;
+}
+
+/* TABLE STYLING */
+#dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+  font-size: 14px;
+  background: #ffffffb0;
+  box-shadow: 0 0 10px rgba(150,150,255,0.3);
+}
+
+/* HEADER & CELL */
+#dataTable th, #dataTable td {
+  border: 1px solid #777;
+  padding: 8px;
+  text-align: center;
+}
+
+#dataTable th {
+  background: #e6d1ff;
+  font-weight: bold;
+}
+
+/* BARIS TANGGAL / GROUP */
 #dataTable td.date-group {
   font-weight: bold;
   text-align: left;
@@ -291,42 +327,28 @@ th {
   padding: 8px 10px;
   font-size: 14px;
   color: #3a2b4d;
+  display: table-cell; /* pastikan tetap render */
 }
 
-/* Separator antar grup (opsional) */
-#dataTable tr + tr.date-group {
-  border-top: 2px solid #bbaaff;
-}
-
-
-/* Tambahkan ikon kalender */
+/* ICON KALENDER */
 #dataTable td.date-group::before {
   content: "📅 ";
   margin-right: 6px;
   font-size: 16px;
 }
 
-/* Jumlah entry per tanggal */
-#dataTable td.date-group .entry-count {
-  font-size: 13px;
-  color: #555;
-  font-weight: normal;
+/* SEPARATOR ANTAR GRUP (opsional) */
+#dataTable tr + tr.date-group {
+  border-top: 2px solid #bbaaff;
 }
 
-/* Separator antar tanggal */
-#dataTable td.separator {
-  height: 8px;
-  background: linear-gradient(to right, transparent, #ddd, transparent);
-  border: none;
-}
-
-/* Hilangkan kolom tanggal asli (tapi data grouping tetap jalan) */
+/* HILANGKAN KOLOM TANGGAL ASLI */
 #dataTable th:first-child,
 #dataTable td:first-child {
   display: none;
 }
 
-/* Responsif agar tabel tidak terlalu lebar di HP */
+/* RESPONSIVE UNTUK MOBILE */
 @media (max-width: 480px) {
   #dataTable {
     font-size: 12px;
@@ -342,10 +364,3 @@ th {
     font-size: 14px;
   }
 }
-
-/* Efek masuk halus untuk tiap grup */
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
