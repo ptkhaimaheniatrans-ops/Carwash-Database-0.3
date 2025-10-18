@@ -168,15 +168,21 @@ async function loadDatabase() {
   const json = await res.json();
   const data = json.data;
 
-  console.log("📦 Data dari server:", data); // ✅ Tambahkan log ini
+  // Kelompokkan data berdasarkan tanggal
+console.log(data[0]); // Debug: lihat struktur data di console
 
-    // Kelompokkan data berdasarkan tanggal
-    console.log(data[0]); // Tambahkan ini sementara
-    const grouped = {};
+const grouped = {};
 data.forEach(row => {
   const dateKey = row.Tanggal; // gunakan persis nama dari JSON
-  if (!grouped[dateKey]) grouped[dateKey] = [];
-  grouped[dateKey].push(row);
+  if (!dateKey) return; // skip jika kosong
+
+  const formattedDate = new Date(dateKey).toLocaleDateString('en-GB', {
+    day: 'numeric', month: 'short', year: 'numeric'
+  });
+
+  // Gunakan formattedDate sebagai key supaya tampilan lebih rapi
+  if (!grouped[formattedDate]) grouped[formattedDate] = [];
+  grouped[formattedDate].push(row);
 });
 
     // Urutkan tanggal
@@ -205,7 +211,9 @@ data.forEach(row => {
   <td>${row.Unit}</td>
   <td>${row.Payment}</td>
 `;
-      });
+    tbody.appendChild(tr);
+  });
+});
 
       // Tambahkan separator kecuali di tanggal terakhir
       if (index < sortedDates.length - 1) {
@@ -240,6 +248,7 @@ document.getElementById('btnBackMain').onclick = () => {
   document.getElementById('login').classList.remove('hidden');
   playSound('klik');
 };
+
 
 
 
