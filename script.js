@@ -93,10 +93,14 @@ backEntry.addEventListener('click', () => {
   dashboard.classList.remove('hidden');
 });
 
-backDB.addEventListener('click', () => {
-  database.classList.add('hidden');
-  dashboard.classList.remove('hidden');
+const backDashboard = document.getElementById('back-dashboard'); // pastikan id button
+
+backDashboard.addEventListener('click', () => {
+  dashboard.classList.add('hidden');
+  loginPage.classList.remove('hidden');
+  secretInput.value = ''; // kosongkan input
 });
+
 
 // ============================
 // SUBMIT INPUT ENTRY
@@ -243,4 +247,5 @@ searchBtn.addEventListener('click', () => {
       }
     });
 });
+
 
